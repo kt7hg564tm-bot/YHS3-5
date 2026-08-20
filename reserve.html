@@ -91,167 +91,572 @@
 
 
   <script type="module">
+  import {
+    watchSettings
+  } from "./common-firestore.js";
 
-    import {
-      watchSettings
-    } from "./common-firestore.js";
+  import {
+    createReservation
+  } from "./reservation-firestore.js";
 
 
-    // 日付を見やすい形にする
-    function formatDate(dateText) {
-      if (!dateText) {
-        return "日付未設定";
-      }
+  let currentSettings = null;
 
-      const parts = dateText.split("-");
 
-      if (parts.length !== 3) {
-        return dateText;
-      }
+  // ==============================
+  // 日付表示
+  // ==============================
 
-      return (
-        Number(parts[1]) +
-        "月" +
-        Number(parts[2]) +
-        "日"
+  function formatDate(dateText) {
+    if (!dateText) {
+      return "日付未設定";
+    }
+
+    const parts = dateText.split("-");
+
+    if (parts.length !== 3) {
+      return dateText;
+    }
+
+    return (
+      Number(parts[1]) +
+      "月" +
+      Number(parts[2]) +
+      "日"
+    );
+  }
+
+
+  // ==============================
+  // 予約時刻をDateに変換
+  // ==============================
+
+  function reservationDateTime(
+    date,
+    time
+  ) {
+    return new Date(
+      date +
+      "T" +
+      time +
+      ":00+09:00"
+    );
+  }
+
+
+  // ==============================
+  // 予約可能か
+  // ==============================
+
+  function isReservationClosed(
+    date,
+    time
+  ) {
+    if (!date || !time) {
+      return true;
+    }
+
+    const startTime =
+      reservationDateTime(
+        date,
+        time
       );
-    }
+
+    return (
+      Date.now() >=
+      startTime.getTime()
+    );
+  }
 
 
-    // 予約枠を作る
-    function createSlots(
-      element,
-      date,
-      times,
-      reservationOpen
+  // ==============================
+  // 人数選択を作る
+  // ==============================
+
+  function createPeopleSelect(
+    maxPeople
+  ) {
+    const select =
+      document.createElement("select");
+
+    select.className =
+      "people-select";
+
+    for (
+      let people = 1;
+      people <= maxPeople;
+      people++
     ) {
-
-      element.innerHTML = "";
-
-      if (!date) {
-        element.innerHTML =
-          '<p class="muted">日付が設定されていません。</p>';
-
-        return;
-      }
-
-      if (!times || times.length === 0) {
-        element.innerHTML =
-          '<p class="muted">予約可能な時間はありません。</p>';
-
-        return;
-      }
-
-
-      times.forEach((time) => {
-
-        const slot =
-          document.createElement("div");
-
-        slot.className = "slot";
-
-
-        const info =
-          document.createElement("div");
-
-        info.className = "slot-info";
-
-
-        const strong =
-          document.createElement("strong");
-
-        strong.textContent = time;
-
-
-        const description =
-          document.createElement("span");
-
-        description.textContent =
-          reservationOpen
-            ? "予約受付中"
-            : "予約停止中";
-
-
-        info.appendChild(strong);
-        info.appendChild(description);
-
-
-        const button =
-          document.createElement("button");
-
-        button.textContent =
-          reservationOpen
-            ? "予約する"
-            : "受付停止";
-
-        button.disabled =
-          !reservationOpen;
-
-
-        slot.appendChild(info);
-        slot.appendChild(button);
-
-        element.appendChild(slot);
-      });
-    }
-
-
-    // Firestoreの設定を画面へ反映
-    function render(data) {
-
-      const status =
-        document.getElementById(
-          "reservationStatus"
+      const option =
+        document.createElement(
+          "option"
         );
 
-      if (data.reservationOpen) {
-        status.textContent =
-          "🟢 現在、予約受付中です。";
-      } else {
-        status.textContent =
-          "🔴 現在、予約受付を停止しています。";
-      }
+      option.value = people;
+      option.textContent =
+        people + "人";
+
+      select.appendChild(option);
+    }
+
+    return select;
+  }
 
 
-      document.getElementById(
-        "day1Title"
-      ).textContent =
-        "文化祭 1日目｜" +
-        formatDate(data.day1Date);
+  // ==============================
+  // 予約完了表示
+  // ==============================
+
+  function showReservationComplete(
+    result
+  ) {
+    const overlay =
+      document.createElement("div");
+
+    overlay.style.position =
+      "fixed";
+
+    overlay.style.inset =
+      "0";
+
+    overlay.style.background =
+      "rgba(0, 0, 0, 0.88)";
+
+    overlay.style.zIndex =
+      "9999";
+
+    overlay.style.display =
+      "flex";
+
+    overlay.style.alignItems =
+      "center";
+
+    overlay.style.justifyContent =
+      "center";
+
+    overlay.style.padding =
+      "20px";
 
 
-      document.getElementById(
-        "day2Title"
-      ).textContent =
-        "文化祭 2日目｜" +
-        formatDate(data.day2Date);
+    const card =
+      document.createElement("div");
 
+    card.className =
+      "card";
 
-      createSlots(
-        document.getElementById(
-          "day1Slots"
-        ),
-        data.day1Date,
-        data.day1AvailableTimes,
-        data.reservationOpen
+    card.style.width =
+      "min(500px, 100%)";
+
+    card.innerHTML = `
+      <h2>✅ 予約完了</h2>
+
+      <p class="muted">
+        あなたの予約番号
+      </p>
+
+      <div class="big-code">
+        ${result.reservationNumber}
+      </div>
+
+      <p>
+        <strong>予約日：</strong>
+        ${formatDate(result.date)}
+      </p>
+
+      <p>
+        <strong>予約時間：</strong>
+        ${result.time}
+      </p>
+
+      <p>
+        <strong>人数：</strong>
+        ${result.people}人
+      </p>
+
+      <div class="notice">
+        予約番号は入場時に必要です。
+        忘れないようにしてください。
+      </div>
+
+      <button id="closeReservationResult">
+        閉じる
+      </button>
+    `;
+
+    overlay.appendChild(card);
+
+    document.body.appendChild(
+      overlay
+    );
+
+    document
+      .getElementById(
+        "closeReservationResult"
+      )
+      .addEventListener(
+        "click",
+        function() {
+          overlay.remove();
+        }
       );
+  }
 
 
-      createSlots(
-        document.getElementById(
-          "day2Slots"
-        ),
-        data.day2Date,
-        data.day2AvailableTimes,
-        data.reservationOpen
-      );
+  // ==============================
+  // 予約枠を作る
+  // ==============================
+
+  function createSlots(
+    element,
+    day,
+    date,
+    times,
+    reservationOpen,
+    maxPeople
+  ) {
+
+    element.innerHTML = "";
+
+
+    if (!date) {
+      element.innerHTML =
+        '<p class="muted">日付が設定されていません。</p>';
+
+      return;
     }
 
 
-    // Firestoreをリアルタイム監視
-    watchSettings(render);
+    if (
+      !times ||
+      times.length === 0
+    ) {
+      element.innerHTML =
+        '<p class="muted">予約可能な時間はありません。</p>';
 
-  </script>
+      return;
+    }
+
+
+    times.forEach((time) => {
+
+      const slot =
+        document.createElement(
+          "div"
+        );
+
+      slot.className = "slot";
+
+
+      const info =
+        document.createElement(
+          "div"
+        );
+
+      info.className =
+        "slot-info";
+
+
+      const strong =
+        document.createElement(
+          "strong"
+        );
+
+      strong.textContent =
+        time;
+
+
+      const description =
+        document.createElement(
+          "span"
+        );
+
+
+      const closed =
+        isReservationClosed(
+          date,
+          time
+        );
+
+
+      if (closed) {
+        description.textContent =
+          "予約は終了しました";
+      } else if (
+        !reservationOpen
+      ) {
+        description.textContent =
+          "予約停止中";
+      } else {
+        description.textContent =
+          "予約受付中";
+      }
+
+
+      info.appendChild(strong);
+      info.appendChild(
+        description
+      );
+
+
+      const controls =
+        document.createElement(
+          "div"
+        );
+
+      controls.style.display =
+        "grid";
+
+      controls.style.gap =
+        "8px";
+
+
+      const peopleSelect =
+        createPeopleSelect(
+          maxPeople
+        );
+
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      if (closed) {
+        button.textContent =
+          "予約終了";
+
+        button.disabled =
+          true;
+
+      } else if (
+        !reservationOpen
+      ) {
+        button.textContent =
+          "受付停止";
+
+        button.disabled =
+          true;
+
+      } else {
+        button.textContent =
+          "予約する";
+
+        button.disabled =
+          false;
+      }
+
+
+      button.addEventListener(
+        "click",
+        async function() {
+
+          if (
+            !currentSettings
+          ) {
+            alert(
+              "設定を読み込み中です。"
+            );
+
+            return;
+          }
+
+
+          const people =
+            Number(
+              peopleSelect.value
+            );
+
+
+          const confirmed =
+            confirm(
+              formatDate(date) +
+              " " +
+              time +
+              " に " +
+              people +
+              "人で予約しますか？"
+            );
+
+
+          if (!confirmed) {
+            return;
+          }
+
+
+          button.disabled =
+            true;
+
+          button.textContent =
+            "予約中...";
+
+
+          try {
+
+            const result =
+              await createReservation({
+                day,
+                date,
+                time,
+                people
+              });
+
+
+            showReservationComplete(
+              result
+            );
+
+
+            button.textContent =
+              "予約完了";
+
+
+          } catch (error) {
+
+            console.error(error);
+
+            alert(
+              error.message ||
+              "予約に失敗しました。"
+            );
+
+
+            button.disabled =
+              false;
+
+            button.textContent =
+              "予約する";
+          }
+        }
+      );
+
+
+      controls.appendChild(
+        peopleSelect
+      );
+
+      controls.appendChild(
+        button
+      );
+
+
+      slot.appendChild(info);
+      slot.appendChild(
+        controls
+      );
+
+
+      element.appendChild(
+        slot
+      );
+    });
+  }
+
+
+  // ==============================
+  // Firestore設定を反映
+  // ==============================
+
+  function render(data) {
+
+    currentSettings = data;
+
+
+    const status =
+      document.getElementById(
+        "reservationStatus"
+      );
+
+
+    if (
+      data.reservationOpen
+    ) {
+      status.textContent =
+        "🟢 現在、予約受付中です。";
+    } else {
+      status.textContent =
+        "🔴 現在、予約受付を停止しています。";
+    }
+
+
+    document
+      .getElementById(
+        "day1Title"
+      )
+      .textContent =
+        "文化祭 1日目｜" +
+        formatDate(
+          data.day1Date
+        );
+
+
+    document
+      .getElementById(
+        "day2Title"
+      )
+      .textContent =
+        "文化祭 2日目｜" +
+        formatDate(
+          data.day2Date
+        );
+
+
+    const maxPeople =
+      Math.max(
+        1,
+        Number(
+          data.maxPeoplePerGroup
+        ) || 1
+      );
+
+
+    createSlots(
+      document.getElementById(
+        "day1Slots"
+      ),
+      1,
+      data.day1Date,
+      data.day1AvailableTimes,
+      data.reservationOpen,
+      maxPeople
+    );
+
+
+    createSlots(
+      document.getElementById(
+        "day2Slots"
+      ),
+      2,
+      data.day2Date,
+      data.day2AvailableTimes,
+      data.reservationOpen,
+      maxPeople
+    );
+  }
+
+
+  // ==============================
+  // 時刻が変わった時の表示更新
+  // ==============================
+
+  setInterval(
+    function() {
+      if (
+        currentSettings
+      ) {
+        render(
+          currentSettings
+        );
+      }
+    },
+    30000
+  );
+
+
+  // Firestoreリアルタイム監視
+  watchSettings(render);
+
+</script>
 
 </body>
 </html>
