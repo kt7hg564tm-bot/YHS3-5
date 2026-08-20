@@ -211,7 +211,30 @@
         最新状態を読み込む
       </button>
     </section>
+<section class="card">
+  <h2>⚠️ テストデータ管理</h2>
 
+  <p class="muted">
+    開発中に作成した予約データと、
+    各予約枠の予約数を完全に削除します。
+  </p>
+
+  <p class="muted">
+    この操作は取り消せません。
+  </p>
+
+  <button
+    id="deleteTestDataButton"
+    class="danger"
+  >
+    🗑️ テストデータを完全削除
+  </button>
+
+  <p
+    id="deleteTestDataMessage"
+    class="muted"
+  ></p>
+</section>
     <div class="nav">
       <a class="button secondary" href="index.html">
         ← 来場者画面
@@ -235,7 +258,9 @@ import {
   onSnapshot,
   doc,
   runTransaction,
-  serverTimestamp
+  serverTimestamp,
+  getDocs,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import {
   db
@@ -482,6 +507,114 @@ async function updateReservationStatus(
       }
     }
   );
+}
+    async function deleteAllTestData() {
+
+  const firstConfirm =
+    confirm(
+      "すべての予約テストデータを削除しますか？"
+    );
+
+  if (!firstConfirm) {
+    return;
+  }
+
+  const secondConfirm =
+    confirm(
+      "⚠️ この操作は取り消せません。本当に完全削除しますか？"
+    );
+
+  if (!secondConfirm) {
+    return;
+  }
+
+  const message =
+    document.getElementById(
+      "deleteTestDataMessage"
+    );
+
+  const button =
+    document.getElementById(
+      "deleteTestDataButton"
+    );
+
+  button.disabled = true;
+
+  message.textContent =
+    "削除中...";
+
+  try {
+
+    const reservationsSnapshot =
+      await getDocs(
+        collection(
+          db,
+          "reservations"
+        )
+      );
+
+    const slotsSnapshot =
+      await getDocs(
+        collection(
+          db,
+          "reservationSlots"
+        )
+      );
+
+
+    const documents = [
+      ...reservationsSnapshot.docs,
+      ...slotsSnapshot.docs
+    ];
+
+
+    // Firestoreの一括書き込みは
+    // 1回あたりの件数に上限があるため、
+    // 400件ずつ処理する
+    const chunkSize = 400;
+
+    for (
+      let i = 0;
+      i < documents.length;
+      i += chunkSize
+    ) {
+
+      const batch =
+        writeBatch(db);
+
+      const chunk =
+        documents.slice(
+          i,
+          i + chunkSize
+        );
+
+      chunk.forEach(
+        (documentSnapshot) => {
+          batch.delete(
+            documentSnapshot.ref
+          );
+        }
+      );
+
+      await batch.commit();
+    }
+
+
+    message.textContent =
+      "✅ テストデータを完全削除しました。";
+
+  } catch (error) {
+
+    console.error(error);
+
+    message.textContent =
+      "❌ テストデータの削除に失敗しました。";
+
+  } finally {
+
+    button.disabled =
+      false;
+  }
 }
     function renderReservations(reservations) {
   const list =
@@ -836,7 +969,14 @@ document
   .addEventListener("click", function() {
     setReservationOpen(false);
   });
-    
+    document
+  .getElementById(
+    "deleteTestDataButton"
+  )
+  .addEventListener(
+    "click",
+    deleteAllTestData
+  );
 
 onSnapshot(
   collection(
