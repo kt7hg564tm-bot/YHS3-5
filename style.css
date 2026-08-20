@@ -34,7 +34,23 @@ body {
   color: var(--text);
   min-height: 100vh;
 }
+/* ==============================
+   トップページ背景
+   ============================== */
 
+body.home-page {
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.12),
+      rgba(0, 0, 0, 0.72)
+    ),
+    url("IMG_1310.jpeg")
+    center top / cover
+    no-repeat;
+
+  background-attachment: scroll;
+  background-color: #050505;
+}
 .container {
   width: min(720px, calc(100% - 28px));
   margin: 0 auto;
