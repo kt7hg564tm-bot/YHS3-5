@@ -8,7 +8,52 @@
 </head>
 
 <body>
-  <main class="container">
+  <section
+  id="loginSection"
+  class="container"
+>
+  <div class="card">
+    <h2>🔐 スタッフログイン</h2>
+
+    <p class="muted">
+      スタッフ用アカウントでログインしてください。
+    </p>
+
+    <label for="staffEmail">
+      メールアドレス
+    </label>
+
+    <input
+      id="staffEmail"
+      type="email"
+      autocomplete="username"
+    >
+
+    <label for="staffPassword">
+      パスワード
+    </label>
+
+    <input
+      id="staffPassword"
+      type="password"
+      autocomplete="current-password"
+    >
+
+    <button id="loginButton">
+      ログイン
+    </button>
+
+    <p
+      id="loginMessage"
+      class="muted"
+    ></p>
+  </div>
+</section>
+  <main
+  id="adminContent"
+  class="container"
+  style="display:none"
+>
 
     <div class="header">
       <h1>👻 スタッフ画面</h1>
