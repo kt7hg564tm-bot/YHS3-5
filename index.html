@@ -117,6 +117,15 @@
 
     document.getElementById("closed").style.display =
       data.receptionOpen ? "none" : "block";
+    const reservationStatus =
+  document.getElementById(
+    "reservationStatus"
+  );
+
+reservationStatus.textContent =
+  data.reservationOpen
+    ? "🟢 現在、予約受付中です。"
+    : "🔴 現在、予約受付を停止しています。";
   }
 
   watchSettings(render);
