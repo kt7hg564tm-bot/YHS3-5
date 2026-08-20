@@ -1,3 +1,14 @@
+@font-face {
+  font-family: "Yuji Boku";
+
+  src:
+    url("fonts/YujiBoku-Regular.ttf")
+    format("truetype");
+
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
 :root {
   --bg: #0b0d12;
   --panel: #151923;
@@ -431,10 +442,10 @@ hr {
 
 .home-wait-label {
   font-family:
-    "Hiragino Mincho ProN",
-    "Yu Mincho",
-    "YuMincho",
-    serif;
+  "Yuji Boku",
+  "Hiragino Mincho ProN",
+  "Yu Mincho",
+  serif;
 
   font-size: 18px;
   font-weight: 600;
@@ -453,10 +464,10 @@ hr {
 }
 .home-wait-number {
   font-family:
-    "Hiragino Mincho ProN",
-    "Yu Mincho",
-    "YuMincho",
-    serif;
+  "Yuji Boku",
+  "Hiragino Mincho ProN",
+  "Yu Mincho",
+  serif;
 
   font-size:
     clamp(80px, 26vw, 140px);
