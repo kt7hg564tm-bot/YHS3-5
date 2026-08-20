@@ -424,6 +424,7 @@ async function createReservation({
                 day,
                 date,
                 time,
+                slotId,
 
                 people,
 
