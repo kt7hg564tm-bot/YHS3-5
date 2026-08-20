@@ -72,39 +72,42 @@
 
   </>
 
-  <script>
-    function render() {
-      const data = loadData();
-      const minutes = waitTime(data);
-      const result = congestion(minutes);
+<script type="module">
+  import {
+    watchSettings,
+    waitTime,
+    congestion,
+    updatedText
+  } from "./common-firestore.js";
 
-      document.getElementById("wait").textContent =
-        minutes + "分";
+  function render(data) {
+    const minutes = waitTime(data);
+    const result = congestion(minutes);
 
-      document.getElementById("count").textContent =
-        data.waitCount;
+    document.getElementById("wait").textContent =
+      minutes + "分";
 
-      const status =
-        document.getElementById("status");
+    document.getElementById("count").textContent =
+      data.waitCount;
 
-      status.textContent =
-        data.isOpen ? result[0] : "受付停止中";
+    const status =
+      document.getElementById("status");
 
-      status.className =
-        "status " +
-        (data.isOpen ? result[1] : "red");
+    status.textContent =
+      data.receptionOpen
+        ? result[0]
+        : "受付停止中";
 
-      document.getElementById("updated").textContent =
-        updatedText(data.updatedAt);
+    status.className =
+      "status " +
+      (data.receptionOpen ? result[1] : "red");
 
-      document.getElementById("closed").style.display =
-        data.isOpen ? "none" : "block";
-    }
+    document.getElementById("updated").textContent =
+      updatedText(data.updatedAt);
 
-    render();
+    document.getElementById("closed").style.display =
+      data.receptionOpen ? "none" : "block";
+  }
 
-    setInterval(render, 1000);
-  </script>
-
-</body>
-</html>
+  watchSettings(render);
+</script>
