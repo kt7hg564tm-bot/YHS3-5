@@ -354,19 +354,30 @@ hr {
   margin: 0;
   min-height: 100vh;
 
-  background:
+  background-color: #050505;
+
+  background-image:
     linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0.02) 0%,
-      rgba(0, 0, 0, 0.08) 48%,
-      rgba(0, 0, 0, 0.74) 72%,
+      rgba(0, 0, 0, 0.00) 0%,
+      rgba(0, 0, 0, 0.04) 45%,
+      rgba(0, 0, 0, 0.72) 72%,
       #050505 100%
     ),
-    url("IMG_1310.jpeg")
-    center top / cover
+    url("IMG_1310.jpeg");
+
+  background-repeat:
+    no-repeat,
     no-repeat;
 
-  background-color: #050505;
+  background-position:
+    center top,
+    center top;
+
+  background-size:
+    100% 100%,
+    100% auto;
+
   color: #f7f3ef;
 }
 
@@ -435,36 +446,50 @@ hr {
 }
 
 .home-wait-label {
-  font-size: 17px;
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size: 18px;
   font-weight: 700;
 
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
 
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 
-  color:
-    rgba(255, 244, 238, 0.94);
+  color: #fff0e8;
+
+  text-shadow:
+    0 0 5px rgba(184, 26, 26, 0.8),
+    0 2px 10px rgba(0, 0, 0, 0.95);
 }
-
 .home-wait-number {
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    "Hiragino Mincho Pro",
+    "Times New Roman",
+    serif;
+
   font-size:
-    clamp(72px, 24vw, 132px);
+    clamp(76px, 25vw, 136px);
 
   line-height: 0.95;
 
-  font-weight: 900;
+  font-weight: 700;
 
-  letter-spacing: -0.04em;
+  letter-spacing: -0.06em;
 
-  color: #fff9f4;
+  color: #fff4ee;
 
   text-shadow:
-    0 0 5px #7c0d0d,
-    0 0 14px rgba(186, 22, 22, 0.95),
-    0 0 30px rgba(116, 0, 0, 0.75),
-    0 4px 16px rgba(0, 0, 0, 0.95);
+    0 0 2px #ffffff,
+    0 0 6px #d6413d,
+    0 0 14px rgba(183, 24, 24, 0.95),
+    0 0 28px rgba(112, 0, 0, 0.9),
+    3px 4px 2px rgba(0, 0, 0, 0.95);
 }
-
 .home-updated {
   margin-top: 16px;
 
