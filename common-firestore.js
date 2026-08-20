@@ -38,6 +38,9 @@ const DEFAULT_SETTINGS = {
   capacityPerSlot: 10,
   maxPeoplePerGroup: 4,
 
+  day1Date: "",
+day2Date: "",
+  
   // 1日目・2日目で別々に設定
   day1AvailableTimes: [],
   day2AvailableTimes: []
