@@ -1,132 +1,314 @@
-
 <!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>お化け屋敷｜待ち時間</title>
-  <link rel="stylesheet" href="style.css">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>暗鞠｜四日市高等学校 3-5</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 </head>
 
 <body class="home-page">
-  <main class="container">
 
-    <div class="header">
-      <h1>暗　　鞠</h1>
-      <p>四日市高等学校　3-5</p>
-    </div>
+  <!-- スタッフ画面へのリンク -->
+  <a
+    class="home-admin-button"
+    href="admin.html"
+    aria-label="スタッフ画面"
+  >
+    ☰
+  </a>
 
-    <section class="card wait-card">
-      <div class="label">現在の待ち時間</div>
 
-      <div id="wait" class="wait">--</div>
+  <main class="home-main">
 
-      <div id="status" class="status">
+    <!-- =========================
+         待ち時間
+         ========================= -->
+    <section class="home-wait">
+
+      <div class="home-wait-label">
+        現在の待ち時間
+      </div>
+
+      <div
+        id="wait"
+        class="home-wait-number"
+      >
         --
       </div>
 
-      <p class="muted">
-        現在の待ち組数：
-        <span id="count">--</span>組
-      </p>
-
-      <p class="muted">
-        最終更新：
+      <div class="home-updated">
+        ◷ 最終更新：
         <span id="updated">--:--</span>
-      </p>
+      </div>
+
     </section>
 
-    <section class="card">
-      <h2>🎟️ 入場予約</h2>
 
-      <p class="muted">
-        時間帯を指定して予約できます。
-        1枠の定員は組数で管理します。
-      </p>
+    <!-- =========================
+         3つの情報
+         ========================= -->
+    <section class="home-info-panel">
 
-      <a class="button" href="reserve.html">
-        予約する
-      </a>
+      <div class="home-info-item">
+        <div class="home-info-icon">
+          ♙
+        </div>
+
+        <div class="home-info-label">
+          待ち組数
+        </div>
+
+        <div class="home-info-value">
+          <span id="count">--</span>組
+        </div>
+      </div>
+
+
+      <div class="home-info-item">
+        <div class="home-info-icon">
+          ◷
+        </div>
+
+        <div class="home-info-label">
+          基本待ち時間
+        </div>
+
+        <div class="home-info-value">
+          <span id="baseMinutes">--</span>分
+        </div>
+      </div>
+
+
+      <div class="home-info-item">
+        <div class="home-info-icon">
+          〽
+        </div>
+
+        <div class="home-info-label">
+          混雑状況
+        </div>
+
+        <div
+          id="status"
+          class="home-congestion"
+        >
+          --
+        </div>
+      </div>
+
     </section>
 
+
+    <!-- =========================
+         お化け屋敷受付状態
+         ========================= -->
     <section
-  id="closed"
-  class="card"
-  style="display:none"
->
-  <div class="notice">
-    🔴 現在、お化け屋敷の受付を停止しています。
-  </div>
-</section>
+      id="receptionNotice"
+      class="home-state-panel"
+    >
+      <div
+        id="receptionStatus"
+        class="home-state-text"
+      >
+        読み込み中...
+      </div>
+    </section>
 
-<section class="card">
-  <h2>🎟️ 予約受付</h2>
 
-  <div
-    id="reservationStatus"
-    class="notice"
-  >
-    読み込み中...
-  </div>
-</section>
+    <!-- =========================
+         予約受付状態
+         ========================= -->
+    <section class="home-reservation-state">
 
-    <div class="nav">
-      <a class="button secondary" href="reservation.html">
-        予約内容を確認
+      <div
+        id="reservationStatus"
+        class="home-reservation-status"
+      >
+        読み込み中...
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         予約ボタン
+         ========================= -->
+    <section class="home-actions">
+
+      <a
+        class="home-action home-action-primary"
+        href="reserve.html"
+      >
+        <span class="home-action-icon">
+          🎟
+        </span>
+
+        <span>
+          <strong>予約はこちら</strong>
+          <small>入場時間を予約する</small>
+        </span>
       </a>
 
-      <a class="button secondary" href="admin.html">
-        スタッフ画面
+
+      <a
+        class="home-action"
+        href="reservation.html"
+      >
+        <span class="home-action-icon">
+          ▣
+        </span>
+
+        <span>
+          <strong>予約確認</strong>
+          <small>あなたの予約を確認</small>
+        </span>
       </a>
-    </div>
 
-  </>
+    </section>
 
-<script type="module">
-  import {
-    watchSettings,
-    waitTime,
-    congestion,
-    updatedText
-  } from "./common-firestore.js";
 
-  function render(data) {
-    const minutes = waitTime(data);
-    const result = congestion(minutes);
+    <!-- =========================
+         フッター
+         ========================= -->
+    <footer class="home-footer">
+      四日市高等学校 3-5
+    </footer>
 
-    document.getElementById("wait").textContent =
-      minutes + "分";
+  </main>
 
-    document.getElementById("count").textContent =
-      data.waitCount;
 
-    const status =
-      document.getElementById("status");
+  <script type="module">
 
-    status.textContent =
-      data.receptionOpen
-        ? result[0]
-        : "受付停止中";
+    import {
+      watchSettings,
+      waitTime,
+      congestion,
+      updatedText
+    } from "./common-firestore.js";
 
-    status.className =
-      "status " +
-      (data.receptionOpen ? result[1] : "red");
 
-    document.getElementById("updated").textContent =
-      updatedText(data.updatedAt);
+    function render(data) {
 
-    document.getElementById("closed").style.display =
-      data.receptionOpen ? "none" : "block";
-    const reservationStatus =
-  document.getElementById(
-    "reservationStatus"
-  );
+      const minutes =
+        waitTime(data);
 
-reservationStatus.textContent =
-  data.reservationOpen
-    ? "🟢 現在、予約受付中です。"
-    : "🔴 現在、予約受付を停止しています。";
-  }
+      const result =
+        congestion(minutes);
 
-  watchSettings(render);
-</script>
+
+      // 待ち時間
+      document
+        .getElementById("wait")
+        .textContent =
+          minutes + "分";
+
+
+      // 待ち組数
+      document
+        .getElementById("count")
+        .textContent =
+          data.waitCount;
+
+
+      // 基本待ち時間
+      document
+        .getElementById("baseMinutes")
+        .textContent =
+          data.baseMinutes;
+
+
+      // 混雑状況
+      const status =
+        document.getElementById(
+          "status"
+        );
+
+      status.textContent =
+        result[0];
+
+      status.className =
+        "home-congestion " +
+        result[1];
+
+
+      // 最終更新
+      document
+        .getElementById("updated")
+        .textContent =
+          updatedText(
+            data.updatedAt
+          );
+
+
+      // お化け屋敷そのものの受付
+      const receptionStatus =
+        document.getElementById(
+          "receptionStatus"
+        );
+
+      const receptionNotice =
+        document.getElementById(
+          "receptionNotice"
+        );
+
+      if (data.receptionOpen) {
+
+        receptionStatus.textContent =
+          "✓ 現在、お化け屋敷は受付中です";
+
+        receptionNotice.classList.remove(
+          "is-closed"
+        );
+
+      } else {
+
+        receptionStatus.textContent =
+          "⚠ 現在、お化け屋敷の受付を停止しています";
+
+        receptionNotice.classList.add(
+          "is-closed"
+        );
+      }
+
+
+      // 予約受付
+      const reservationStatus =
+        document.getElementById(
+          "reservationStatus"
+        );
+
+      if (data.reservationOpen) {
+
+        reservationStatus.textContent =
+          "● 時間指定予約 受付中";
+
+        reservationStatus.className =
+          "home-reservation-status is-open";
+
+      } else {
+
+        reservationStatus.textContent =
+          "● 現在、予約受付を停止しています";
+
+        reservationStatus.className =
+          "home-reservation-status is-closed";
+      }
+    }
+
+
+    watchSettings(render);
+
+  </script>
+
+</body>
+</html>
