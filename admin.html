@@ -59,7 +59,12 @@
       <h1>👻 スタッフ画面</h1>
       <p>お化け屋敷｜待ち時間管理</p>
     </div>
-
+<button
+  id="logoutButton"
+  class="secondary"
+>
+  ログアウト
+</button>
     <section class="card">
   <h2>🎟️ 予約設定</h2>
 
@@ -308,10 +313,90 @@ import {
   writeBatch
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+  import {
+  app,
   db
 } from "./firebase.js";
-  let currentData = null;
+    const auth =
+  getAuth(app);
+    let currentData = null;
+async function loginStaff() {
+  const email =
+    document.getElementById(
+      "staffEmail"
+    ).value.trim();
 
+  const password =
+    document.getElementById(
+      "staffPassword"
+    ).value;
+
+  const message =
+    document.getElementById(
+      "loginMessage"
+    );
+
+  if (!email || !password) {
+    message.textContent =
+      "メールアドレスとパスワードを入力してください。";
+
+    return;
+  }
+
+  message.textContent =
+    "ログイン中...";
+
+  try {
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    message.textContent = "";
+
+  } catch (error) {
+    console.error(error);
+
+    message.textContent =
+      "❌ ログインに失敗しました。";
+  }
+}
+    onAuthStateChanged(
+  auth,
+  (user) => {
+
+    const loginSection =
+      document.getElementById(
+        "loginSection"
+      );
+
+    const adminContent =
+      document.getElementById(
+        "adminContent"
+      );
+
+    if (user) {
+      loginSection.style.display =
+        "none";
+
+      adminContent.style.display =
+        "block";
+
+    } else {
+      loginSection.style.display =
+        "block";
+
+      adminContent.style.display =
+        "none";
+    }
+  }
+);
   function render(data) {
     currentData = data;
 
@@ -1022,7 +1107,29 @@ document
     "click",
     deleteAllTestData
   );
-
+document
+  .getElementById(
+    "loginButton"
+  )
+  .addEventListener(
+    "click",
+    loginStaff
+  );
+    document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.error(error);
+        alert("ログアウトに失敗しました。");
+      }
+    }
+  );
 onSnapshot(
   collection(
     db,
