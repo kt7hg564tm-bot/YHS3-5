@@ -3,67 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Firebase接続テスト</title>
+  <title>Firestore初期設定</title>
 </head>
 
 <body>
-  <h1>Firebase接続テスト</h1>
-
-  <p id="status">テスト中...</p>
+  <h1>Firestore初期設定</h1>
+  <p id="status">設定を作成しています...</p>
 
   <script type="module">
-    import { db } from "./firebase.js";
-
     import {
-      doc,
-      setDoc,
-      getDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+      loadSettings
+    } from "./common-firestore.js";
 
     const status =
       document.getElementById("status");
 
-    async function testFirebase() {
+    async function initialize() {
       try {
-        status.textContent =
-          "Firestoreに書き込み中...";
-
-        const testRef =
-          doc(db, "system", "connection-test");
-
-        await setDoc(testRef, {
-          message: "YHS3-5 Firebase接続成功",
-          updatedAt: serverTimestamp()
-        });
+        const settings = await loadSettings();
 
         status.textContent =
-          "Firestoreから読み込み中...";
-
-        const snapshot =
-          await getDoc(testRef);
-
-        if (!snapshot.exists()) {
-          throw new Error(
-            "書き込んだデータを読み取れませんでした。"
-          );
-        }
-
-        status.textContent =
-          "✅ Firebase接続成功！\n" +
-          snapshot.data().message;
-
+          "✅ 初期設定の作成に成功しました！";
       } catch (error) {
         console.error(error);
 
         status.textContent =
-          "❌ Firebase接続失敗\n" +
+          "❌ 初期設定の作成に失敗しました。\n" +
           error.message;
       }
     }
 
-    testFirebase();
+    initialize();
   </script>
-
 </body>
 </html>
