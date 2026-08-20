@@ -438,5 +438,6 @@ async function createReservation({
 // ==============================
 
 export {
-  createReservation
+  createReservation,
+  watchReservationSlot
 };
