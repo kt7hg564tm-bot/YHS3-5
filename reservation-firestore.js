@@ -36,7 +36,53 @@ function makeSlotId(date, time) {
     time.replace(":", "-")
   );
 }
+function watchReservationSlot(
+  date,
+  time,
+  callback
+) {
+  const slotId =
+    makeSlotId(
+      date,
+      time
+    );
 
+  const slotRef =
+    doc(
+      db,
+      "reservationSlots",
+      slotId
+    );
+
+  return onSnapshot(
+    slotRef,
+
+    (snapshot) => {
+      if (!snapshot.exists()) {
+        callback({
+          reservationCount: 0
+        });
+
+        return;
+      }
+
+      callback({
+        reservationCount:
+          Number(
+            snapshot.data()
+              .reservationCount
+          ) || 0
+      });
+    },
+
+    (error) => {
+      console.error(
+        "予約枠の監視に失敗しました:",
+        error
+      );
+    }
+  );
+}
 
 // ==============================
 // 予約時刻をDateに変換
