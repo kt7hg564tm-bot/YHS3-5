@@ -600,9 +600,128 @@ async function updateReservationStatus(
           }
 
           row.appendChild(info);
-          row.appendChild(status);
+row.appendChild(status);
 
-          section.appendChild(row);
+
+if (
+  reservation.status ===
+  "reserved"
+) {
+
+  const actions =
+    document.createElement(
+      "div"
+    );
+
+  actions.className =
+    "action";
+
+
+  const admittedButton =
+    document.createElement(
+      "button"
+    );
+
+  admittedButton.className =
+    "small-btn";
+
+  admittedButton.textContent =
+    "✅ 入場済み";
+
+
+  const cancelButton =
+    document.createElement(
+      "button"
+    );
+
+  cancelButton.className =
+    "small-btn danger";
+
+  cancelButton.textContent =
+    "❌ キャンセル";
+
+
+  admittedButton.addEventListener(
+    "click",
+    async function() {
+
+      const confirmed =
+        confirm(
+          "予約番号 " +
+          reservation.reservationNumber +
+          " を入場済みにしますか？"
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+        await updateReservationStatus(
+          reservation,
+          "admitted"
+        );
+
+      } catch (error) {
+        console.error(error);
+
+        alert(
+          error.message ||
+          "処理に失敗しました。"
+        );
+      }
+    }
+  );
+
+
+  cancelButton.addEventListener(
+    "click",
+    async function() {
+
+      const confirmed =
+        confirm(
+          "予約番号 " +
+          reservation.reservationNumber +
+          " をキャンセルしますか？"
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+        await updateReservationStatus(
+          reservation,
+          "cancelled"
+        );
+
+      } catch (error) {
+        console.error(error);
+
+        alert(
+          error.message ||
+          "処理に失敗しました。"
+        );
+      }
+    }
+  );
+
+
+  actions.appendChild(
+    admittedButton
+  );
+
+  actions.appendChild(
+    cancelButton
+  );
+
+  row.appendChild(
+    actions
+  );
+}
+
+
+section.appendChild(row);
         }
       );
 
