@@ -106,103 +106,122 @@
 
   </main>
 
-  <script src="common.js"></script>
+  <script type="module">
+  import {
+    watchSettings,
+    saveSettings,
+    waitTime
+  } from "./common-firestore.js";
 
-  <script>
-    function render() {
-      const data = loadData();
+  let currentData = null;
 
-      const minutes = waitTime(data);
+  function render(data) {
+    currentData = data;
 
-      document.getElementById("currentWait").textContent =
-        minutes + "分";
+    const minutes = waitTime(data);
 
-      document.getElementById("currentCount").textContent =
-        data.waitCount;
+    document.getElementById("currentWait").textContent =
+      minutes + "分";
 
-      document.getElementById("currentStatus").textContent =
-        data.isOpen ? "受付中" : "受付停止中";
+    document.getElementById("currentCount").textContent =
+      data.waitCount;
 
-      document.getElementById("waitCount").value =
-        data.waitCount;
+    document.getElementById("currentStatus").textContent =
+      data.receptionOpen
+        ? "受付中"
+        : "受付停止中";
 
-      document.getElementById("baseMinutes").value =
-        data.baseMinutes;
+    document.getElementById("waitCount").value =
+      data.waitCount;
+
+    document.getElementById("baseMinutes").value =
+      data.baseMinutes;
+  }
+
+  async function saveWaitSettings() {
+    if (!currentData) {
+      alert("設定データを読み込み中です。");
+      return;
     }
 
-    function saveSettings() {
-      const data = loadData();
+    const waitCount =
+      Number(document.getElementById("waitCount").value);
 
-      const waitCount =
-        Number(document.getElementById("waitCount").value);
+    const baseMinutes =
+      Number(document.getElementById("baseMinutes").value);
 
-      const baseMinutes =
-        Number(document.getElementById("baseMinutes").value);
+    if (
+      !Number.isFinite(waitCount) ||
+      waitCount < 0 ||
+      !Number.isInteger(waitCount)
+    ) {
+      alert("待ち組数は0以上の整数で入力してください。");
+      return;
+    }
 
-      if (
-        !Number.isFinite(waitCount) ||
-        waitCount < 0 ||
-        !Number.isInteger(waitCount)
-      ) {
-        alert("待ち組数は0以上の整数で入力してください。");
-        return;
-      }
+    if (
+      !Number.isFinite(baseMinutes) ||
+      baseMinutes < 0 ||
+      !Number.isInteger(baseMinutes)
+    ) {
+      alert("基本待ち時間は0以上の整数で入力してください。");
+      return;
+    }
 
-      if (
-        !Number.isFinite(baseMinutes) ||
-        baseMinutes < 0 ||
-        !Number.isInteger(baseMinutes)
-      ) {
-        alert("基本待ち時間は0以上の整数で入力してください。");
-        return;
-      }
-
-      data.waitCount = waitCount;
-      data.baseMinutes = baseMinutes;
-      data.updatedAt = new Date().toISOString();
-
-      saveData(data);
+    try {
+      await saveSettings({
+        waitCount,
+        baseMinutes
+      });
 
       document.getElementById("message").textContent =
         "✅ 設定を保存しました。";
 
-      render();
+    } catch (error) {
+      console.error(error);
+
+      document.getElementById("message").textContent =
+        "❌ 設定の保存に失敗しました。";
     }
+  }
 
-    function setOpen(isOpen) {
-      const data = loadData();
-
-      data.isOpen = isOpen;
-      data.updatedAt = new Date().toISOString();
-
-      saveData(data);
+  async function setReceptionOpen(isOpen) {
+    try {
+      await saveSettings({
+        receptionOpen: isOpen
+      });
 
       document.getElementById("message").textContent =
         isOpen
           ? "🟢 受付を開始しました。"
           : "🔴 受付を停止しました。";
 
-      render();
+    } catch (error) {
+      console.error(error);
+
+      document.getElementById("message").textContent =
+        "❌ 受付状態の変更に失敗しました。";
     }
+  }
 
-    document
-      .getElementById("saveButton")
-      .addEventListener("click", saveSettings);
+  document
+    .getElementById("saveButton")
+    .addEventListener("click", saveWaitSettings);
 
-    document
-      .getElementById("openButton")
-      .addEventListener("click", function() {
-        setOpen(true);
-      });
+  document
+    .getElementById("openButton")
+    .addEventListener("click", function() {
+      setReceptionOpen(true);
+    });
 
-    document
-      .getElementById("closeButton")
-      .addEventListener("click", function() {
-        setOpen(false);
-      });
+  document
+    .getElementById("closeButton")
+    .addEventListener("click", function() {
+      setReceptionOpen(false);
+    });
 
-    render();
-  </script>
+  watchSettings(render);
+</script>
 
 </body>
 </html>
