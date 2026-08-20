@@ -425,7 +425,21 @@ async function setReservationOpen(isOpen) {
     .addEventListener("click", function() {
       setReceptionOpen(false);
     });
+document
+  .getElementById("saveReservationSettings")
+  .addEventListener("click", saveReservationSettingsData);
 
+document
+  .getElementById("reservationOpenButton")
+  .addEventListener("click", function() {
+    setReservationOpen(true);
+  });
+
+document
+  .getElementById("reservationCloseButton")
+  .addEventListener("click", function() {
+    setReservationOpen(false);
+  });
   watchSettings(render);
 </script>
 
