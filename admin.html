@@ -593,12 +593,28 @@ onSnapshot(
   (snapshot) => {
 
     const reservations =
-      snapshot.docs.map(
-        (docSnapshot) => ({
-          id: docSnapshot.id,
-          ...docSnapshot.data()
-        })
+  snapshot.docs
+    .map(
+      (docSnapshot) => ({
+        id: docSnapshot.id,
+        ...docSnapshot.data()
+      })
+    )
+    .sort((a, b) => {
+      const aKey =
+        (a.date || "") +
+        "_" +
+        (a.time || "");
+
+      const bKey =
+        (b.date || "") +
+        "_" +
+        (b.time || "");
+
+      return aKey.localeCompare(
+        bKey
       );
+    });
 
     renderReservations(
       reservations
