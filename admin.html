@@ -459,6 +459,44 @@ document
   .addEventListener("click", function() {
     setReservationOpen(false);
   });
+    const reservationsQuery =
+  query(
+    collection(
+      db,
+      "reservations"
+    ),
+    orderBy("date"),
+    orderBy("time")
+  );
+
+onSnapshot(
+  reservationsQuery,
+  (snapshot) => {
+
+    const reservations =
+      snapshot.docs.map(
+        (docSnapshot) => ({
+          id: docSnapshot.id,
+          ...docSnapshot.data()
+        })
+      );
+
+    renderReservations(
+      reservations
+    );
+  },
+  (error) => {
+    console.error(
+      "予約一覧の読み込みに失敗しました:",
+      error
+    );
+
+    document.getElementById(
+      "reservationList"
+    ).textContent =
+      "❌ 予約一覧を読み込めませんでした。";
+  }
+);
   watchSettings(render);
 </script>
 
