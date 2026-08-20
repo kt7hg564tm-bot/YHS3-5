@@ -583,18 +583,13 @@ document
   .addEventListener("click", function() {
     setReservationOpen(false);
   });
-    const reservationsQuery =
-  query(
-    collection(
-      db,
-      "reservations"
-    ),
-    orderBy("date"),
-    orderBy("time")
-  );
+    
 
 onSnapshot(
-  reservationsQuery,
+  collection(
+    db,
+    "reservations"
+  ),
   (snapshot) => {
 
     const reservations =
