@@ -1,0 +1,332 @@
+:root {
+  --bg: #0b0d12;
+  --panel: #151923;
+  --panel2: #1d2230;
+  --text: #f4f6fb;
+  --muted: #aeb6c7;
+  --accent: #b77cff;
+  --green: #35d07f;
+  --yellow: #ffd34d;
+  --orange: #ff9f43;
+  --red: #ff5d6c;
+  --border: #303748;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #20263a 0,
+      var(--bg) 45%
+    );
+
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.container {
+  width: min(720px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 28px 0 48px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.header h1 {
+  margin: 0 0 6px;
+  font-size: clamp(25px, 7vw, 38px);
+}
+
+.header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.card {
+  background: rgba(21, 25, 35, 0.95);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  margin: 14px 0;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.wait-card {
+  text-align: center;
+  padding: 28px 18px;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.wait {
+  font-size: clamp(64px, 20vw, 112px);
+  line-height: 1;
+  font-weight: 800;
+  margin: 8px 0;
+}
+
+.status {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.green {
+  background: rgba(53, 208, 127, 0.15);
+  color: var(--green);
+}
+
+.yellow {
+  background: rgba(255, 211, 77, 0.15);
+  color: var(--yellow);
+}
+
+.orange {
+  background: rgba(255, 159, 67, 0.15);
+  color: var(--orange);
+}
+
+.red {
+  background: rgba(255, 93, 108, 0.15);
+  color: var(--red);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+button,
+.button {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 16px;
+
+  font-size: 16px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  background: var(--accent);
+  color: #fff;
+
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+button.secondary,
+.button.secondary {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+}
+
+button.danger {
+  background: var(--red);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.slot:last-child {
+  border-bottom: 0;
+}
+
+.slot-info strong {
+  display: block;
+  font-size: 17px;
+}
+
+.slot-info span {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.slot button {
+  width: auto;
+  min-width: 105px;
+
+  padding: 10px 12px;
+
+  font-size: 14px;
+}
+
+input,
+select {
+  width: 100%;
+
+  padding: 13px;
+
+  border-radius: 10px;
+  border: 1px solid var(--border);
+
+  background: #0f131c;
+  color: var(--text);
+
+  font-size: 16px;
+}
+
+label {
+  display: block;
+  margin: 14px 0 7px;
+
+  font-weight: 700;
+}
+
+.notice {
+  padding: 12px 14px;
+
+  border-radius: 10px;
+
+  background: rgba(183, 124, 255, 0.10);
+
+  color: #dfc8ff;
+}
+
+.big-code {
+  font-size: 42px;
+  font-weight: 900;
+
+  letter-spacing: 5px;
+
+  text-align: center;
+
+  margin: 12px 0 22px;
+}
+
+.admin-row {
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+
+  gap: 10px;
+
+  align-items: end;
+}
+
+.admin-row button {
+  width: auto;
+  white-space: nowrap;
+}
+
+.booking-time {
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.reservation {
+  padding: 12px 0;
+
+  border-bottom: 1px solid var(--border);
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    auto
+    auto;
+
+  gap: 10px;
+
+  align-items: center;
+}
+
+.reservation:last-child {
+  border-bottom: 0;
+}
+
+.small-btn {
+  width: auto;
+
+  padding: 8px 10px;
+
+  font-size: 13px;
+}
+
+.pill {
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.nav {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+hr {
+  border: 0;
+
+  border-top:
+    1px solid var(--border);
+
+  margin: 20px 0;
+}
+
+@media (max-width: 520px) {
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .slot {
+    align-items: flex-start;
+  }
+
+  .reservation {
+    grid-template-columns:
+      1fr
+      auto;
+  }
+
+  .reservation .action {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
