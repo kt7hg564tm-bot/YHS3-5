@@ -16,6 +16,114 @@
     </div>
 
     <section class="card">
+  <h2>🎟️ 予約設定</h2>
+
+  <label for="day1Date">
+    文化祭 1日目
+  </label>
+
+  <input
+    id="day1Date"
+    type="date"
+  >
+
+  <label for="day2Date">
+    文化祭 2日目
+  </label>
+
+  <input
+    id="day2Date"
+    type="date"
+  >
+
+  <label for="capacityPerSlot">
+    1枠の定員（組）
+  </label>
+
+  <input
+    id="capacityPerSlot"
+    type="number"
+    min="1"
+    step="1"
+    value="10"
+  >
+
+  <label for="maxPeoplePerGroup">
+    1組の最大人数
+  </label>
+
+  <input
+    id="maxPeoplePerGroup"
+    type="number"
+    min="1"
+    step="1"
+    value="4"
+  >
+
+  <hr>
+
+  <h3>1日目の予約可能時間</h3>
+
+  <div class="grid">
+    <label><input type="checkbox" class="day1-time" value="09:00"> 09:00</label>
+    <label><input type="checkbox" class="day1-time" value="09:30"> 09:30</label>
+    <label><input type="checkbox" class="day1-time" value="10:00"> 10:00</label>
+    <label><input type="checkbox" class="day1-time" value="10:30"> 10:30</label>
+    <label><input type="checkbox" class="day1-time" value="11:00"> 11:00</label>
+    <label><input type="checkbox" class="day1-time" value="11:30"> 11:30</label>
+    <label><input type="checkbox" class="day1-time" value="12:00"> 12:00</label>
+    <label><input type="checkbox" class="day1-time" value="12:30"> 12:30</label>
+    <label><input type="checkbox" class="day1-time" value="13:00"> 13:00</label>
+    <label><input type="checkbox" class="day1-time" value="13:30"> 13:30</label>
+    <label><input type="checkbox" class="day1-time" value="14:00"> 14:00</label>
+    <label><input type="checkbox" class="day1-time" value="14:30"> 14:30</label>
+    <label><input type="checkbox" class="day1-time" value="15:00"> 15:00</label>
+  </div>
+
+  <hr>
+
+  <h3>2日目の予約可能時間</h3>
+
+  <div class="grid">
+    <label><input type="checkbox" class="day2-time" value="09:00"> 09:00</label>
+    <label><input type="checkbox" class="day2-time" value="09:30"> 09:30</label>
+    <label><input type="checkbox" class="day2-time" value="10:00"> 10:00</label>
+    <label><input type="checkbox" class="day2-time" value="10:30"> 10:30</label>
+    <label><input type="checkbox" class="day2-time" value="11:00"> 11:00</label>
+    <label><input type="checkbox" class="day2-time" value="11:30"> 11:30</label>
+    <label><input type="checkbox" class="day2-time" value="12:00"> 12:00</label>
+    <label><input type="checkbox" class="day2-time" value="12:30"> 12:30</label>
+    <label><input type="checkbox" class="day2-time" value="13:00"> 13:00</label>
+    <label><input type="checkbox" class="day2-time" value="13:30"> 13:30</label>
+    <label><input type="checkbox" class="day2-time" value="14:00"> 14:00</label>
+    <label><input type="checkbox" class="day2-time" value="14:30"> 14:30</label>
+    <label><input type="checkbox" class="day2-time" value="15:00"> 15:00</label>
+  </div>
+
+  <hr>
+
+  <h3>予約受付</h3>
+
+  <div class="grid">
+    <button id="reservationOpenButton">
+      🟢 予約受付開始
+    </button>
+
+    <button
+      id="reservationCloseButton"
+      class="danger"
+    >
+      🔴 予約停止
+    </button>
+  </div>
+
+  <button id="saveReservationSettings">
+    💾 予約設定を保存
+  </button>
+
+  <p id="reservationMessage" class="muted"></p>
+</section>
+    <section class="card">
       <h2>現在の状態</h2>
 
       <div class="notice">
