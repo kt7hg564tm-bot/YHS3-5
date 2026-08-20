@@ -351,6 +351,138 @@ document.querySelectorAll(".day2-time").forEach((checkbox) => {
         "❌ 受付状態の変更に失敗しました。";
     }
   }
+    function makeSlotId(date, time) {
+  return (
+    date +
+    "_" +
+    time.replace(":", "-")
+  );
+}
+
+async function updateReservationStatus(
+  reservation,
+  newStatus
+) {
+  const reservationRef =
+    doc(
+      db,
+      "reservations",
+      reservation.reservationNumber
+    );
+
+  const slotRef =
+    doc(
+      db,
+      "reservationSlots",
+      makeSlotId(
+        reservation.date,
+        reservation.time
+      )
+    );
+
+  await runTransaction(
+    db,
+    async (transaction) => {
+
+      const reservationSnapshot =
+        await transaction.get(
+          reservationRef
+        );
+
+      if (
+        !reservationSnapshot.exists()
+      ) {
+        throw new Error(
+          "予約が見つかりません。"
+        );
+      }
+
+      const current =
+        reservationSnapshot.data();
+
+      if (
+        current.status !==
+        "reserved"
+      ) {
+        throw new Error(
+          "この予約はすでに処理されています。"
+        );
+      }
+
+
+      // ==========================
+      // 入場済みにする
+      // ==========================
+
+      if (
+        newStatus === "admitted"
+      ) {
+        transaction.update(
+          reservationRef,
+          {
+            status: "admitted",
+            updatedAt:
+              serverTimestamp()
+          }
+        );
+
+        return;
+      }
+
+
+      // ==========================
+      // キャンセル
+      // ==========================
+
+      if (
+        newStatus === "cancelled"
+      ) {
+        const slotSnapshot =
+          await transaction.get(
+            slotRef
+          );
+
+        let reservationCount = 0;
+
+        if (
+          slotSnapshot.exists()
+        ) {
+          reservationCount =
+            Number(
+              slotSnapshot.data()
+                .reservationCount
+            ) || 0;
+        }
+
+        transaction.update(
+          reservationRef,
+          {
+            status: "cancelled",
+            updatedAt:
+              serverTimestamp()
+          }
+        );
+
+        transaction.set(
+          slotRef,
+          {
+            reservationCount:
+              Math.max(
+                0,
+                reservationCount - 1
+              ),
+
+            updatedAt:
+              serverTimestamp()
+          },
+          {
+            merge: true
+          }
+        );
+      }
+    }
+  );
+}
     function renderReservations(reservations) {
   const list =
     document.getElementById(
