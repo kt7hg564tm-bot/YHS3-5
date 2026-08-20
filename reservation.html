@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>予約内容を確認｜お化け屋敷</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="container">
+
+    <div class="header">
+      <h1>🎟️ 予約内容を確認</h1>
+      <p>お化け屋敷</p>
+    </div>
+
+
+    <section class="card">
+
+      <h2>予約番号を入力</h2>
+
+      <p class="muted">
+        予約完了時に発行された
+        4桁の予約番号を入力してください。
+      </p>
+
+      <label for="reservationNumber">
+        予約番号
+      </label>
+
+      <input
+        id="reservationNumber"
+        type="text"
+        inputmode="numeric"
+        maxlength="4"
+        placeholder="例：5831"
+        autocomplete="off"
+      >
+
+      <button id="searchButton">
+        🔍 予約を確認
+      </button>
+
+      <p id="message" class="muted"></p>
+
+    </section>
+
+
+    <section
+      id="resultCard"
+      class="card"
+      style="display:none"
+    >
+
+      <h2>予約内容</h2>
+
+      <p class="muted">
+        予約番号
+      </p>
+
+      <div
+        id="resultNumber"
+        class="big-code"
+      >
+        ----
+      </div>
+
+
+      <p>
+        <strong>文化祭：</strong>
+        <span id="resultDay">--</span>
+      </p>
+
+      <p>
+        <strong>予約日：</strong>
+        <span id="resultDate">--</span>
+      </p>
+
+      <p>
+        <strong>予約時間：</strong>
+        <span id="resultTime">--</span>
+      </p>
+
+      <p>
+        <strong>人数：</strong>
+        <span id="resultPeople">--</span>
+      </p>
+
+      <p>
+        <strong>予約状態：</strong>
+        <span id="resultStatus">--</span>
+      </p>
+
+
+      <div class="notice">
+        入場時にこの予約番号を
+        スタッフへ提示してください。
+      </div>
+
+    </section>
+
+
+    <section class="card">
+      <h2>ご注意</h2>
+
+      <p class="muted">
+        来場者側から予約を
+        キャンセルすることはできません。
+      </p>
+
+      <p class="muted">
+        予約時間から15分以上経過した場合、
+        スタッフの判断で予約が
+        キャンセルされる場合があります。
+      </p>
+    </section>
+
+
+    <div class="nav">
+
+      <a
+        class="button secondary"
+        href="index.html"
+      >
+        ← トップページ
+      </a>
+
+      <a
+        class="button secondary"
+        href="reserve.html"
+      >
+        🎟️ 予約する
+      </a>
+
+    </div>
+
+  </main>
+
+
+  <script type="module">
+
+    import {
+      db
+    } from "./firebase.js";
+
+    import {
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    // ==============================
+    // 日付表示
+    // ==============================
+
+    function formatDate(dateText) {
+
+      if (!dateText) {
+        return "--";
+      }
+
+      const parts =
+        dateText.split("-");
+
+      if (
+        parts.length !== 3
+      ) {
+        return dateText;
+      }
+
+      return (
+        Number(parts[1]) +
+        "月" +
+        Number(parts[2]) +
+        "日"
+      );
+    }
+
+
+    // ==============================
+    // 予約状態表示
+    // ==============================
+
+    function statusText(status) {
+
+      if (
+        status === "reserved"
+      ) {
+        return "予約済み";
+      }
+
+      if (
+        status === "cancelled"
+      ) {
+        return "キャンセル済み";
+      }
+
+      if (
+        status === "admitted"
+      ) {
+        return "入場済み";
+      }
+
+      return status || "--";
+    }
+
+
+    // ==============================
+    // 検索
+    // ==============================
+
+    async function searchReservation() {
+
+      const input =
+        document
+          .getElementById(
+            "reservationNumber"
+          )
+          .value
+          .trim();
+
+
+      const message =
+        document.getElementById(
+          "message"
+        );
+
+      const resultCard =
+        document.getElementById(
+          "resultCard"
+        );
+
+
+      resultCard.style.display =
+        "none";
+
+
+      // 4桁数字か確認
+      if (
+        !/^\d{4}$/.test(input)
+      ) {
+        message.textContent =
+          "予約番号は4桁の数字で入力してください。";
+
+        return;
+      }
+
+
+      message.textContent =
+        "予約情報を確認しています...";
+
+
+      try {
+
+        const reservationRef =
+          doc(
+            db,
+            "reservations",
+            input
+          );
+
+
+        const snapshot =
+          await getDoc(
+            reservationRef
+          );
+
+
+        if (
+          !snapshot.exists()
+        ) {
+
+          message.textContent =
+            "該当する予約が見つかりませんでした。";
+
+          return;
+        }
+
+
+        const data =
+          snapshot.data();
+
+
+        document
+          .getElementById(
+            "resultNumber"
+          )
+          .textContent =
+            data.reservationNumber;
+
+
+        document
+          .getElementById(
+            "resultDay"
+          )
+          .textContent =
+            data.day === 1
+              ? "1日目"
+              : data.day === 2
+                ? "2日目"
+                : "--";
+
+
+        document
+          .getElementById(
+            "resultDate"
+          )
+          .textContent =
+            formatDate(
+              data.date
+            );
+
+
+        document
+          .getElementById(
+            "resultTime"
+          )
+          .textContent =
+            data.time || "--";
+
+
+        document
+          .getElementById(
+            "resultPeople"
+          )
+          .textContent =
+            (
+              data.people ?? "--"
+            ) + "人";
+
+
+        document
+          .getElementById(
+            "resultStatus"
+          )
+          .textContent =
+            statusText(
+              data.status
+            );
+
+
+        resultCard.style.display =
+          "block";
+
+
+        message.textContent =
+          "✅ 予約が見つかりました。";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        message.textContent =
+          "❌ 予約情報の読み込みに失敗しました。";
+      }
+    }
+
+
+    // ==============================
+    // ボタン
+    // ==============================
+
+    document
+      .getElementById(
+        "searchButton"
+      )
+      .addEventListener(
+        "click",
+        searchReservation
+      );
+
+
+    // Enterキーでも検索
+    document
+      .getElementById(
+        "reservationNumber"
+      )
+      .addEventListener(
+        "keydown",
+        function(event) {
+
+          if (
+            event.key === "Enter"
+          ) {
+            searchReservation();
+          }
+        }
+      );
+
+  </script>
+
+</body>
+</html>
