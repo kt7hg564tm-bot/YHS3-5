@@ -351,6 +351,132 @@ document.querySelectorAll(".day2-time").forEach((checkbox) => {
         "❌ 受付状態の変更に失敗しました。";
     }
   }
+    function renderReservations(reservations) {
+  const list =
+    document.getElementById(
+      "reservationList"
+    );
+
+  list.innerHTML = "";
+
+  if (
+    reservations.length === 0
+  ) {
+    list.innerHTML =
+      '<p class="muted">予約はまだありません。</p>';
+
+    return;
+  }
+
+  const groups = {};
+
+  reservations.forEach((reservation) => {
+    const key =
+      reservation.date +
+      "_" +
+      reservation.time;
+
+    if (!groups[key]) {
+      groups[key] = [];
+    }
+
+    groups[key].push(reservation);
+  });
+
+  Object.keys(groups)
+    .sort()
+    .forEach((key) => {
+
+      const group =
+        groups[key];
+
+      const first =
+        group[0];
+
+      const section =
+        document.createElement(
+          "div"
+        );
+
+      section.style.marginBottom =
+        "24px";
+
+      const title =
+        document.createElement(
+          "h3"
+        );
+
+      title.textContent =
+        first.date +
+        "  " +
+        first.time;
+
+      section.appendChild(title);
+
+      group.forEach(
+        (reservation) => {
+
+          const row =
+            document.createElement(
+              "div"
+            );
+
+          row.className =
+            "reservation";
+
+          const info =
+            document.createElement(
+              "div"
+            );
+
+          info.innerHTML =
+            "<strong>" +
+            reservation.reservationNumber +
+            "</strong><br>" +
+            reservation.people +
+            "人";
+
+          const status =
+            document.createElement(
+              "span"
+            );
+
+          status.className =
+            "pill";
+
+          if (
+            reservation.status ===
+            "reserved"
+          ) {
+            status.textContent =
+              "予約済み";
+          } else if (
+            reservation.status ===
+            "admitted"
+          ) {
+            status.textContent =
+              "入場済み";
+          } else if (
+            reservation.status ===
+            "cancelled"
+          ) {
+            status.textContent =
+              "キャンセル済み";
+          } else {
+            status.textContent =
+              reservation.status || "--";
+          }
+
+          row.appendChild(info);
+          row.appendChild(status);
+
+          section.appendChild(row);
+        }
+      );
+
+      list.appendChild(section);
+    });
+}
 async function saveReservationSettingsData() {
   const day1Date =
     document.getElementById("day1Date").value;
