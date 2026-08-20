@@ -244,6 +244,27 @@
 
     document.getElementById("baseMinutes").value =
       data.baseMinutes;
+    document.getElementById("day1Date").value =
+  data.day1Date || "";
+
+document.getElementById("day2Date").value =
+  data.day2Date || "";
+
+document.getElementById("capacityPerSlot").value =
+  data.capacityPerSlot;
+
+document.getElementById("maxPeoplePerGroup").value =
+  data.maxPeoplePerGroup;
+
+document.querySelectorAll(".day1-time").forEach((checkbox) => {
+  checkbox.checked =
+    data.day1AvailableTimes.includes(checkbox.value);
+});
+
+document.querySelectorAll(".day2-time").forEach((checkbox) => {
+  checkbox.checked =
+    data.day2AvailableTimes.includes(checkbox.value);
+});
   }
 
   async function saveWaitSettings() {
