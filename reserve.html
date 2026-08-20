@@ -446,7 +446,62 @@
         button.disabled =
           false;
       }
+const remaining =
+  document.createElement(
+    "span"
+  );
 
+remaining.textContent =
+  "残り枠を確認中...";
+
+info.appendChild(
+  remaining
+);
+
+if (
+  !closed &&
+  reservationOpen
+) {
+  watchReservationSlot(
+    date,
+    time,
+    (slotData) => {
+      const reservationCount =
+        Number(
+          slotData.reservationCount
+        ) || 0;
+
+      const capacity =
+        Number(
+          currentSettings
+            ?.capacityPerSlot
+        ) || 0;
+
+      const remainingCount =
+        capacity -
+        reservationCount;
+
+      if (
+        remainingCount <= 0
+      ) {
+        remaining.textContent =
+          "満員";
+
+        button.disabled =
+          true;
+
+        button.textContent =
+          "満員";
+
+      } else {
+        remaining.textContent =
+          "残り" +
+          remainingCount +
+          "組";
+      }
+    }
+  );
+}
 
       button.addEventListener(
         "click",
