@@ -332,7 +332,84 @@ document.querySelectorAll(".day2-time").forEach((checkbox) => {
         "❌ 受付状態の変更に失敗しました。";
     }
   }
+async function saveReservationSettingsData() {
+  const day1Date =
+    document.getElementById("day1Date").value;
 
+  const day2Date =
+    document.getElementById("day2Date").value;
+
+  const capacityPerSlot =
+    Number(document.getElementById("capacityPerSlot").value);
+
+  const maxPeoplePerGroup =
+    Number(document.getElementById("maxPeoplePerGroup").value);
+
+  const day1AvailableTimes =
+    Array.from(
+      document.querySelectorAll(".day1-time:checked")
+    ).map((checkbox) => checkbox.value);
+
+  const day2AvailableTimes =
+    Array.from(
+      document.querySelectorAll(".day2-time:checked")
+    ).map((checkbox) => checkbox.value);
+
+  if (
+    !Number.isInteger(capacityPerSlot) ||
+    capacityPerSlot < 1
+  ) {
+    alert("1枠の定員は1以上の整数で入力してください。");
+    return;
+  }
+
+  if (
+    !Number.isInteger(maxPeoplePerGroup) ||
+    maxPeoplePerGroup < 1
+  ) {
+    alert("1組の最大人数は1以上の整数で入力してください。");
+    return;
+  }
+
+  try {
+    await saveSettings({
+      day1Date,
+      day2Date,
+      capacityPerSlot,
+      maxPeoplePerGroup,
+      day1AvailableTimes,
+      day2AvailableTimes
+    });
+
+    document.getElementById("reservationMessage").textContent =
+      "✅ 予約設定を保存しました。";
+
+  } catch (error) {
+    console.error(error);
+
+    document.getElementById("reservationMessage").textContent =
+      "❌ 予約設定の保存に失敗しました。";
+  }
+}
+
+async function setReservationOpen(isOpen) {
+  try {
+    await saveSettings({
+      reservationOpen: isOpen
+    });
+
+    document.getElementById("reservationMessage").textContent =
+      isOpen
+        ? "🟢 予約受付を開始しました。"
+        : "🔴 予約受付を停止しました。";
+
+  } catch (error) {
+    console.error(error);
+
+    document.getElementById("reservationMessage").textContent =
+      "❌ 予約受付状態の変更に失敗しました。";
+  }
+}
   document
     .getElementById("saveButton")
     .addEventListener("click", saveWaitSettings);
