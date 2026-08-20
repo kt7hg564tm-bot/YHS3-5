@@ -1,1 +1,112 @@
 
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>お化け屋敷｜待ち時間</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="container">
+
+    <div class="header">
+      <h1>👻 お化け屋敷</h1>
+      <p>○○高校 文化祭</p>
+    </div>
+
+    <section class="card wait-card">
+      <div class="label">現在の待ち時間</div>
+
+      <div id="wait" class="wait">--</div>
+
+      <div id="status" class="status">
+        --
+      </div>
+
+      <p class="muted">
+        現在の待ち組数：
+        <span id="count">--</span>組
+      </p>
+
+      <p class="muted">
+        最終更新：
+        <span id="updated">--:--</span>
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>🎟️ 入場予約</h2>
+
+      <p class="muted">
+        時間帯を指定して予約できます。
+        1枠の定員は組数で管理します。
+      </p>
+
+      <a class="button" href="reserve.html">
+        予約する
+      </a>
+    </section>
+
+    <section
+      id="closed"
+      class="card"
+      style="display:none"
+    >
+      <div class="notice">
+        🔴 現在、受付を停止しています。<br>
+        予約も一時停止中です。
+      </div>
+    </section>
+
+    <div class="nav">
+      <a class="button secondary" href="reservation.html">
+        予約内容を確認
+      </a>
+
+      <a class="button secondary" href="admin.html">
+        スタッフ画面
+      </a>
+    </div>
+
+  </main>
+
+  <script src="common.js"></script>
+
+  <script>
+    function render() {
+      const data = loadData();
+      const minutes = waitTime(data);
+      const result = congestion(minutes);
+
+      document.getElementById("wait").textContent =
+        minutes + "分";
+
+      document.getElementById("count").textContent =
+        data.waitCount;
+
+      const status =
+        document.getElementById("status");
+
+      status.textContent =
+        data.isOpen ? result[0] : "受付停止中";
+
+      status.className =
+        "status " +
+        (data.isOpen ? result[1] : "red");
+
+      document.getElementById("updated").textContent =
+        updatedText(data.updatedAt);
+
+      document.getElementById("closed").style.display =
+        data.isOpen ? "none" : "block";
+    }
+
+    render();
+
+    setInterval(render, 1000);
+  </script>
+
+</body>
+</html>
