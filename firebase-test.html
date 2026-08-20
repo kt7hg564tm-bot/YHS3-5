@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Firebase接続テスト</title>
+</head>
+
+<body>
+  <h1>Firebase接続テスト</h1>
+
+  <p id="status">テスト中...</p>
+
+  <script type="module">
+    import { db } from "./firebase.js";
+
+    import {
+      doc,
+      setDoc,
+      getDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+    const status =
+      document.getElementById("status");
+
+    async function testFirebase() {
+      try {
+        status.textContent =
+          "Firestoreに書き込み中...";
+
+        const testRef =
+          doc(db, "system", "connection-test");
+
+        await setDoc(testRef, {
+          message: "YHS3-5 Firebase接続成功",
+          updatedAt: serverTimestamp()
+        });
+
+        status.textContent =
+          "Firestoreから読み込み中...";
+
+        const snapshot =
+          await getDoc(testRef);
+
+        if (!snapshot.exists()) {
+          throw new Error(
+            "書き込んだデータを読み取れませんでした。"
+          );
+        }
+
+        status.textContent =
+          "✅ Firebase接続成功！\n" +
+          snapshot.data().message;
+
+      } catch (error) {
+        console.error(error);
+
+        status.textContent =
+          "❌ Firebase接続失敗\n" +
+          error.message;
+      }
+    }
+
+    testFirebase();
+  </script>
+
+</body>
+</html>
