@@ -346,3 +346,505 @@ hr {
     grid-row: 1 / span 2;
   }
 }
+/* =========================================
+   TOP PAGE - KURAMARI
+   ========================================= */
+
+.home-page {
+  margin: 0;
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.02) 0%,
+      rgba(0, 0, 0, 0.08) 48%,
+      rgba(0, 0, 0, 0.74) 72%,
+      #050505 100%
+    ),
+    url("IMG_1310.jpeg")
+    center top / cover
+    no-repeat;
+
+  background-color: #050505;
+  color: #f7f3ef;
+}
+
+
+/* 管理画面ボタン */
+
+.home-admin-button {
+  position: fixed;
+  top: max(18px, env(safe-area-inset-top));
+  right: 18px;
+
+  z-index: 50;
+
+  width: 46px;
+  height: 46px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+
+  background:
+    rgba(5, 5, 5, 0.48);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  color: #f5eee8;
+
+  font-size: 24px;
+  line-height: 1;
+
+  text-decoration: none;
+}
+
+
+/* メイン全体 */
+
+.home-main {
+  width: min(
+    720px,
+    calc(100% - 28px)
+  );
+
+  margin: 0 auto;
+
+  padding:
+    58vh
+    0
+    calc(34px + env(safe-area-inset-bottom));
+}
+
+
+/* =========================================
+   WAIT TIME
+   ========================================= */
+
+.home-wait {
+  text-align: center;
+
+  margin-bottom: 20px;
+
+  text-shadow:
+    0 2px 18px rgba(0, 0, 0, 0.9);
+}
+
+.home-wait-label {
+  font-size: 17px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  margin-bottom: 8px;
+
+  color:
+    rgba(255, 244, 238, 0.94);
+}
+
+.home-wait-number {
+  font-size:
+    clamp(72px, 24vw, 132px);
+
+  line-height: 0.95;
+
+  font-weight: 900;
+
+  letter-spacing: -0.04em;
+
+  color: #fff9f4;
+
+  text-shadow:
+    0 0 5px #7c0d0d,
+    0 0 14px rgba(186, 22, 22, 0.95),
+    0 0 30px rgba(116, 0, 0, 0.75),
+    0 4px 16px rgba(0, 0, 0, 0.95);
+}
+
+.home-updated {
+  margin-top: 16px;
+
+  font-size: 14px;
+
+  color:
+    rgba(255, 255, 255, 0.82);
+}
+
+
+/* =========================================
+   INFO PANEL
+   ========================================= */
+
+.home-info-panel {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 16px;
+
+  background:
+    rgba(7, 7, 8, 0.76);
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.42);
+
+  margin-bottom: 16px;
+}
+
+.home-info-item {
+  min-width: 0;
+
+  padding:
+    16px
+    8px
+    17px;
+
+  text-align: center;
+
+  position: relative;
+}
+
+.home-info-item:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+  right: 0;
+  top: 18%;
+  bottom: 18%;
+
+  width: 1px;
+
+  background:
+    rgba(255, 255, 255, 0.12);
+}
+
+.home-info-icon {
+  min-height: 24px;
+
+  margin-bottom: 6px;
+
+  font-size: 22px;
+
+  color:
+    rgba(255, 255, 255, 0.78);
+}
+
+.home-info-label {
+  font-size: 12px;
+
+  color:
+    rgba(255, 255, 255, 0.64);
+
+  margin-bottom: 6px;
+}
+
+.home-info-value {
+  font-size:
+    clamp(18px, 5vw, 24px);
+
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.home-congestion {
+  font-size:
+    clamp(15px, 4.4vw, 21px);
+
+  font-weight: 850;
+
+  white-space: nowrap;
+}
+
+
+/* 既存の混雑色をトップ用に活かす */
+
+.home-congestion.green {
+  color: #62e39c;
+
+  background: none;
+}
+
+.home-congestion.yellow {
+  color: #ffd75b;
+
+  background: none;
+}
+
+.home-congestion.orange {
+  color: #ffad52;
+
+  background: none;
+}
+
+.home-congestion.red {
+  color: #ff676f;
+
+  background: none;
+}
+
+
+/* =========================================
+   RECEPTION STATE
+   ========================================= */
+
+.home-state-panel {
+  border:
+    1px solid rgba(95, 214, 144, 0.38);
+
+  border-radius: 14px;
+
+  background:
+    rgba(18, 78, 46, 0.18);
+
+  margin-bottom: 10px;
+
+  padding:
+    14px 16px;
+
+  text-align: center;
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
+
+.home-state-panel.is-closed {
+  border-color:
+    rgba(219, 49, 55, 0.75);
+
+  background:
+    rgba(113, 8, 15, 0.26);
+}
+
+.home-state-text {
+  font-weight: 750;
+
+  font-size: 14px;
+
+  color: #d9fbe6;
+}
+
+.home-state-panel.is-closed
+.home-state-text {
+  color: #ff7478;
+}
+
+
+/* =========================================
+   RESERVATION STATE
+   ========================================= */
+
+.home-reservation-state {
+  text-align: center;
+
+  margin-bottom: 14px;
+}
+
+.home-reservation-status {
+  display: inline-block;
+
+  padding:
+    7px 13px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  backdrop-filter:
+    blur(8px);
+
+  -webkit-backdrop-filter:
+    blur(8px);
+}
+
+.home-reservation-status.is-open {
+  color: #71e7a9;
+
+  background:
+    rgba(22, 113, 67, 0.2);
+
+  border:
+    1px solid rgba(82, 213, 142, 0.26);
+}
+
+.home-reservation-status.is-closed {
+  color: #ff7478;
+
+  background:
+    rgba(130, 13, 21, 0.22);
+
+  border:
+    1px solid rgba(229, 55, 64, 0.36);
+}
+
+
+/* =========================================
+   ACTIONS
+   ========================================= */
+
+.home-actions {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 10px;
+
+  margin-top: 4px;
+}
+
+.home-action {
+  min-height: 108px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding:
+    14px 13px;
+
+  border:
+    1px solid rgba(207, 177, 168, 0.34);
+
+  border-radius: 15px;
+
+  background:
+    rgba(10, 9, 10, 0.72);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+
+  text-decoration: none;
+
+  color: #fff7f2;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+.home-action-primary {
+  border-color:
+    rgba(205, 44, 50, 0.7);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(92, 8, 13, 0.58),
+      rgba(14, 8, 9, 0.76)
+    );
+}
+
+.home-action-icon {
+  flex:
+    0 0 auto;
+
+  font-size: 25px;
+}
+
+.home-action strong {
+  display: block;
+
+  font-size:
+    clamp(16px, 4.5vw, 20px);
+
+  margin-bottom: 5px;
+
+  line-height: 1.15;
+}
+
+.home-action small {
+  display: block;
+
+  color:
+    rgba(255, 255, 255, 0.59);
+
+  font-size: 11px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
+.home-footer {
+  padding:
+    24px
+    0
+    4px;
+
+  text-align: center;
+
+  color:
+    rgba(255, 255, 255, 0.52);
+
+  font-size: 13px;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================
+   SMALL PHONES
+   ========================================= */
+
+@media (max-width: 420px) {
+
+  .home-main {
+    width:
+      calc(100% - 22px);
+
+    padding-top: 54vh;
+  }
+
+  .home-info-item {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .home-info-label {
+    font-size: 11px;
+  }
+
+  .home-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .home-action {
+    min-height: 100px;
+
+    padding:
+      12px
+      10px;
+  }
+
+  .home-action-icon {
+    font-size: 21px;
+  }
+}
