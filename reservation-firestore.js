@@ -391,22 +391,25 @@ async function createReservation({
             // --------------------
 
             transaction.set(
-              slotRef,
-              {
-                day,
-                date,
-                time,
+  slotRef,
+  {
+    day,
+    date,
+    time,
 
-                reservationCount:
-                  reservationCount + 1,
+    reservationCount:
+      reservationCount + 1,
 
-                updatedAt:
-                  serverTimestamp()
-              },
-              {
-                merge: true
-              }
-            );
+    lastReservationNumber:
+      reservationNumber,
+
+    updatedAt:
+      serverTimestamp()
+  },
+  {
+    merge: true
+  }
+);
 
 
             // --------------------
