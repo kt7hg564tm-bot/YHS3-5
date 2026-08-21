@@ -1741,3 +1741,7 @@ hr {
 .reserve-page #closeReservationResult:active {
   transform: scale(0.98);
 }
+
+.staff-login-back {
+  margin-top: 14px;
+}
