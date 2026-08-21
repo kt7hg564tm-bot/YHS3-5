@@ -134,15 +134,9 @@ function waitTime(data) {
 
   return Math.max(
     0,
-    Math.round(base + count * 3)
+    Math.round(count * base)
   );
 }
-
-
-// ==============================
-// 混雑状況
-// ==============================
-
 function congestion(minutes) {
   if (minutes <= 10) {
     return [
