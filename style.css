@@ -930,3 +930,395 @@ hr {
       repeat(2, 1fr);
   }
 }
+
+/* =========================================
+   RESERVATION PAGE - KURAMARI
+   ========================================= */
+
+.reserve-page {
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.84),
+      rgba(5, 0, 0, 0.94)
+    ),
+    url("IMG_1310.jpeg")
+    center top / cover
+    fixed;
+
+  background-color: #050505;
+
+  color: #f5f0ed;
+}
+
+
+/* ページ全体 */
+
+.reserve-page .container {
+  width: min(
+    720px,
+    calc(100% - 24px)
+  );
+
+  padding-top:
+    calc(24px + env(safe-area-inset-top));
+
+  padding-bottom:
+    calc(42px + env(safe-area-inset-bottom));
+}
+
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.reserve-header {
+  margin:
+    10px
+    0
+    26px;
+
+  text-align: center;
+}
+
+.reserve-header h1 {
+  margin: 0;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size:
+    clamp(38px, 11vw, 58px);
+
+  font-weight: 400;
+
+  letter-spacing: 0.12em;
+
+  color: #fff0e9;
+
+  text-shadow:
+    0 0 5px rgba(193, 20, 20, 0.9),
+    0 0 18px rgba(112, 0, 0, 0.7);
+}
+
+.reserve-header p {
+  margin-top: 5px;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size: 18px;
+
+  letter-spacing: 0.15em;
+
+  color:
+    rgba(255, 255, 255, 0.72);
+}
+
+
+/* =========================================
+   CARDS
+   ========================================= */
+
+.reserve-page .card {
+  margin:
+    16px
+    0;
+
+  padding:
+    22px
+    20px;
+
+  border:
+    1px solid rgba(151, 30, 30, 0.52);
+
+  border-radius: 17px;
+
+  background:
+    rgba(5, 5, 7, 0.83);
+
+  backdrop-filter:
+    blur(13px);
+
+  -webkit-backdrop-filter:
+    blur(13px);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.40),
+    inset 0 0 22px rgba(87, 0, 0, 0.08);
+}
+
+
+/* カード見出し */
+
+.reserve-page .card h2 {
+  margin:
+    0
+    0
+    18px;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size:
+    clamp(24px, 7vw, 34px);
+
+  font-weight: 400;
+
+  letter-spacing:
+    0.05em;
+
+  color: #fff7f2;
+}
+
+
+/* =========================================
+   RESERVATION STATUS
+   ========================================= */
+
+.reserve-page #reservationStatus {
+  padding:
+    15px
+    16px;
+
+  border:
+    1px solid rgba(177, 35, 35, 0.38);
+
+  border-radius: 12px;
+
+  background:
+    rgba(71, 4, 9, 0.24);
+
+  color: #f6d8d3;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+
+/* =========================================
+   NOTICE / DESCRIPTION
+   ========================================= */
+
+.reserve-page .muted {
+  color:
+    rgba(234, 225, 223, 0.68);
+
+  line-height: 1.75;
+}
+
+.reserve-page .card p + p {
+  margin-top: 14px;
+}
+
+
+/* =========================================
+   RESERVATION SLOTS
+   ========================================= */
+
+.reserve-page .slot {
+  margin:
+    10px
+    0;
+
+  padding:
+    17px
+    14px;
+
+  border:
+    1px solid rgba(128, 34, 34, 0.54);
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(35, 4, 6, 0.42),
+      rgba(8, 8, 10, 0.76)
+    );
+
+  box-shadow:
+    inset 0 0 20px rgba(80, 0, 0, 0.09);
+}
+
+
+/* 元の横線を消す */
+
+.reserve-page .slot {
+  border-bottom:
+    1px solid rgba(128, 34, 34, 0.54);
+}
+
+
+/* 時間 */
+
+.reserve-page .slot-info strong {
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size: 25px;
+  font-weight: 400;
+
+  color: #fff7f2;
+
+  margin-bottom: 5px;
+}
+
+
+/* 受付状況・残り枠 */
+
+.reserve-page .slot-info span {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 13px;
+
+  color:
+    rgba(238, 224, 221, 0.66);
+}
+
+
+/* =========================================
+   PEOPLE SELECT
+   ========================================= */
+
+.reserve-page .people-select {
+  min-width: 92px;
+
+  border:
+    1px solid rgba(180, 64, 64, 0.46);
+
+  border-radius: 10px;
+
+  background:
+    rgba(6, 6, 8, 0.92);
+
+  color: #fff;
+
+  font-size: 16px;
+}
+
+
+/* =========================================
+   RESERVATION BUTTON
+   ========================================= */
+
+.reserve-page .slot button {
+  min-width: 105px;
+
+  border:
+    1px solid rgba(255, 76, 76, 0.35);
+
+  background:
+    linear-gradient(
+      135deg,
+      #8d090e,
+      #c32629
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 6px 18px rgba(129, 0, 0, 0.28);
+
+  transition:
+    transform 0.12s ease,
+    opacity 0.12s ease;
+}
+
+.reserve-page .slot button:active {
+  transform: scale(0.97);
+}
+
+.reserve-page .slot button:disabled {
+  background:
+    rgba(55, 55, 60, 0.75);
+
+  border-color:
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    rgba(255, 255, 255, 0.48);
+
+  box-shadow: none;
+}
+
+
+/* =========================================
+   NAVIGATION
+   ========================================= */
+
+.reserve-page .nav {
+  margin-top: 20px;
+}
+
+.reserve-page .nav .button {
+  border:
+    1px solid rgba(151, 50, 50, 0.35);
+
+  background:
+    rgba(8, 8, 10, 0.84);
+
+  color: #f5e9e5;
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
+
+
+/* =========================================
+   RESERVATION COMPLETE
+   ========================================= */
+
+.reserve-page .big-code {
+  font-family:
+    "Bakudai Bold",
+    "Yuji Boku",
+    serif;
+
+  color: #ff4b4b;
+
+  text-shadow:
+    0 0 12px rgba(190, 0, 0, 0.72);
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 520px) {
+
+  .reserve-page .card {
+    padding:
+      20px
+      16px;
+  }
+
+  .reserve-page .slot {
+    align-items: center;
+
+    gap: 12px;
+  }
+
+  .reserve-page .slot-info {
+    min-width: 0;
+  }
+
+  .reserve-page .slot button {
+    width: 100%;
+  }
+}
