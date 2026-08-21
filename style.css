@@ -895,3 +895,38 @@ hr {
     font-size: 21px;
   }
 }
+
+.time-grid {
+  grid-template-columns:
+    repeat(2, 1fr);
+  gap: 8px 12px;
+}
+
+.time-grid label {
+  margin: 0;
+  padding: 10px 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: #0f131c;
+
+  font-size: 15px;
+}
+
+.time-grid input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 520px) {
+  .time-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
