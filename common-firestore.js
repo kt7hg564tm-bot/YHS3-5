@@ -138,21 +138,21 @@ function waitTime(data) {
   );
 }
 function congestion(minutes) {
-  if (minutes <= 10) {
+  if (minutes <= 15) {
     return [
       "空いています",
       "green"
     ];
   }
 
-  if (minutes <= 20) {
+  if (minutes <= 30) {
     return [
       "やや混雑",
       "yellow"
     ];
   }
 
-  if (minutes <= 30) {
+  if (minutes <= 45) {
     return [
       "混雑しています",
       "orange"
