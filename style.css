@@ -1619,3 +1619,125 @@ hr {
   -webkit-backdrop-filter:
     blur(10px);
 }
+/* =========================================
+   RESERVATION COMPLETE
+   ========================================= */
+
+.reserve-page .reservation-complete-card {
+  border:
+    1px solid rgba(190, 35, 35, 0.75);
+
+  background:
+    rgba(4, 4, 6, 0.96);
+
+  box-shadow:
+    0 0 30px rgba(120, 0, 0, 0.24),
+    0 24px 60px rgba(0, 0, 0, 0.75);
+
+  color: #f7eeeb;
+}
+
+
+/* 「予約完了」 */
+
+.reserve-page .reservation-complete-card h2 {
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size:
+    clamp(30px, 8vw, 42px);
+
+  font-weight: 400;
+
+  color: #fff4ee;
+
+  text-shadow:
+    0 0 6px rgba(185, 25, 25, 0.75);
+
+  margin-bottom: 22px;
+}
+
+
+/* 予約番号 */
+
+.reserve-page .reservation-complete-card .big-code {
+  margin:
+    14px
+    0
+    26px;
+
+  color: #ff4848;
+
+  text-shadow:
+    0 0 8px rgba(255, 55, 55, 0.65),
+    0 0 20px rgba(150, 0, 0, 0.72);
+}
+
+
+/* 予約情報 */
+
+.reserve-page .reservation-complete-card > p {
+  color:
+    rgba(247, 238, 235, 0.90);
+
+  line-height: 1.6;
+}
+
+.reserve-page .reservation-complete-card > p strong {
+  color: #fff7f3;
+}
+
+
+/* スクリーンショット案内 */
+
+.reserve-page .reservation-complete-card .notice {
+  margin:
+    18px
+    0;
+
+  padding:
+    15px 16px;
+
+  border:
+    1px solid rgba(178, 40, 40, 0.5);
+
+  background:
+    rgba(76, 4, 8, 0.30);
+
+  color: #f2d6d2;
+
+  line-height: 1.65;
+}
+
+
+/* 閉じるボタン */
+
+.reserve-page #closeReservationResult {
+  margin-top: 4px;
+
+  border:
+    1px solid rgba(255, 78, 78, 0.38);
+
+  background:
+    linear-gradient(
+      135deg,
+      #87090d,
+      #c02629
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 8px 22px rgba(120, 0, 0, 0.30);
+
+  font-size: 17px;
+  font-weight: 800;
+
+  letter-spacing: 0.05em;
+}
+
+.reserve-page #closeReservationResult:active {
+  transform: scale(0.98);
+}
