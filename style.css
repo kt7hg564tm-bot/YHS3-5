@@ -969,6 +969,7 @@ hr {
 }
 
 
+
 /* =========================================
    HEADER
    ========================================= */
@@ -1321,4 +1322,300 @@ hr {
   .reserve-page .slot button {
     width: 100%;
   }
+}
+
+/* =========================================
+   RESERVATION CHECK PAGE - KURAMARI
+   ========================================= */
+
+.reservation-check-page {
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.86),
+      rgba(5, 0, 0, 0.95)
+    ),
+    url("IMG_1310.jpeg")
+    center top / cover
+    fixed;
+
+  background-color: #050505;
+
+  color: #f5f0ed;
+}
+
+
+/* ページ全体 */
+
+.reservation-check-page .container {
+  width: min(
+    720px,
+    calc(100% - 24px)
+  );
+
+  padding-top:
+    calc(24px + env(safe-area-inset-top));
+
+  padding-bottom:
+    calc(42px + env(safe-area-inset-bottom));
+}
+
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.reservation-check-header {
+  margin:
+    10px
+    0
+    26px;
+
+  text-align: center;
+}
+
+.reservation-check-header h1 {
+  margin: 0;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size:
+    clamp(38px, 11vw, 58px);
+
+  font-weight: 400;
+
+  letter-spacing: 0.12em;
+
+  color: #fff0e9;
+
+  text-shadow:
+    0 0 5px rgba(193, 20, 20, 0.9),
+    0 0 18px rgba(112, 0, 0, 0.7);
+}
+
+.reservation-check-header p {
+  margin-top: 5px;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size: 18px;
+
+  letter-spacing: 0.15em;
+
+  color:
+    rgba(255, 255, 255, 0.72);
+}
+
+
+/* =========================================
+   CARDS
+   ========================================= */
+
+.reservation-check-page .card {
+  margin:
+    16px
+    0;
+
+  padding:
+    22px
+    20px;
+
+  border:
+    1px solid rgba(151, 30, 30, 0.52);
+
+  border-radius: 17px;
+
+  background:
+    rgba(5, 5, 7, 0.84);
+
+  backdrop-filter:
+    blur(13px);
+
+  -webkit-backdrop-filter:
+    blur(13px);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.40),
+    inset 0 0 22px rgba(87, 0, 0, 0.08);
+}
+
+
+/* 見出し */
+
+.reservation-check-page .card h2 {
+  margin:
+    0
+    0
+    18px;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size:
+    clamp(24px, 7vw, 34px);
+
+  font-weight: 400;
+
+  letter-spacing:
+    0.05em;
+
+  color: #fff7f2;
+}
+
+
+/* =========================================
+   INPUT
+   ========================================= */
+
+.reservation-check-page #reservationNumber {
+  margin-bottom: 12px;
+
+  border:
+    1px solid rgba(180, 64, 64, 0.5);
+
+  background:
+    rgba(4, 4, 6, 0.92);
+
+  color: #fff;
+
+  font-size: 22px;
+
+  letter-spacing: 0.18em;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   SEARCH BUTTON
+   ========================================= */
+
+.reservation-check-page #searchButton {
+  background:
+    linear-gradient(
+      135deg,
+      #8d090e,
+      #c32629
+    );
+
+  border:
+    1px solid rgba(255, 76, 76, 0.35);
+
+  box-shadow:
+    0 6px 18px rgba(129, 0, 0, 0.28);
+}
+
+
+/* =========================================
+   MESSAGE
+   ========================================= */
+
+.reservation-check-page #message {
+  margin-bottom: 0;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   RESULT CARD
+   ========================================= */
+
+.reservation-check-page #resultCard {
+  border-color:
+    rgba(195, 36, 36, 0.7);
+
+  box-shadow:
+    0 0 26px rgba(109, 0, 0, 0.20),
+    0 18px 45px rgba(0, 0, 0, 0.42);
+}
+
+
+/* 予約番号 */
+
+.reservation-check-page .big-code {
+  font-family:
+    "Bakudai Bold",
+    "Yuji Boku",
+    serif;
+
+  font-size:
+    clamp(52px, 16vw, 76px);
+
+  color: #ff4b4b;
+
+  text-shadow:
+    0 0 8px rgba(255, 70, 70, 0.5),
+    0 0 18px rgba(151, 0, 0, 0.72);
+}
+
+
+/* 予約情報 */
+
+.reservation-check-page #resultCard p {
+  padding:
+    8px
+    0;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reservation-check-page #resultCard p:last-of-type {
+  border-bottom: 0;
+}
+
+
+/* 注意表示 */
+
+.reservation-check-page .notice {
+  margin-top: 16px;
+
+  border:
+    1px solid rgba(161, 39, 39, 0.48);
+
+  background:
+    rgba(77, 3, 8, 0.28);
+
+  color: #f4d8d2;
+}
+
+
+/* muted */
+
+.reservation-check-page .muted {
+  color:
+    rgba(234, 225, 223, 0.68);
+
+  line-height: 1.75;
+}
+
+
+/* =========================================
+   NAVIGATION
+   ========================================= */
+
+.reservation-check-page .nav .button {
+  border:
+    1px solid rgba(151, 50, 50, 0.35);
+
+  background:
+    rgba(8, 8, 10, 0.84);
+
+  color: #f5e9e5;
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
 }
