@@ -447,6 +447,8 @@ hr {
 
   margin-bottom: 20px;
 
+  overflow: visible;
+
   text-shadow:
     0 2px 18px rgba(0, 0, 0, 0.9);
 }
@@ -475,68 +477,40 @@ hr {
 }
 .home-wait-number {
   font-family:
-  "Bakudai Bold",
-  "Yuji Boku",
-  "Hiragino Mincho ProN",
-  "Yu Mincho",
-  serif;
+    "Bakudai Bold",
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
 
   font-size:
-    clamp(80px, 26vw, 140px);
+    clamp(82px, 27vw, 145px);
 
-  line-height: 0.9;
+  font-weight: 700;
 
-  font-weight: 800;
+  line-height: 1.18;
 
   letter-spacing: -0.07em;
 
-  color: #f5e9e2;
+  color: #fff4ee;
 
-  -webkit-text-stroke:
-    0.5px rgba(70, 0, 0, 0.8);
+  margin:
+    4px
+    0
+    2px;
+
+  padding:
+    8px
+    8px
+    16px;
+
+  overflow: visible;
 
   text-shadow:
-    2px 1px 0 #470707,
-    -1px -1px 0 rgba(100, 15, 12, 0.8),
-    0 0 4px #fff0e8,
-    0 0 9px #ba2724,
-    0 0 18px rgba(142, 8, 8, 0.95),
-    0 0 34px rgba(76, 0, 0, 0.95),
-    3px 6px 4px rgba(0, 0, 0, 0.95);
-
-    -webkit-mask-image:
-    radial-gradient(
-      circle at 12% 18%,
-      transparent 0 1.3px,
-      #000 1.8px
-    ),
-    radial-gradient(
-      circle at 74% 32%,
-      transparent 0 1.8px,
-      #000 2.4px
-    ),
-    radial-gradient(
-      circle at 34% 68%,
-      transparent 0 1.2px,
-      #000 1.7px
-    );
-
-  -webkit-mask-size:
-    23px 19px,
-    31px 27px,
-    17px 23px;
-
-  -webkit-mask-repeat: repeat;
-
-  mask-image:
-    radial-gradient(
-      circle at 12% 18%,
-      transparent 0 1.3px,
-      #000 1.8px
-    );
-
-  mask-size: 23px 19px;
-  mask-repeat: repeat;
+    0 2px 1px rgba(35, 0, 0, 0.95),
+    0 0 4px rgba(255, 238, 230, 0.75),
+    0 0 10px rgba(210, 32, 32, 0.95),
+    0 0 22px rgba(160, 8, 8, 0.85),
+    0 0 38px rgba(95, 0, 0, 0.60);
 }
 .home-updated {
   margin-top: 16px;
