@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>みんなの感想｜暗鞠</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css?v=40"
+  >
+</head>
+
+<body class="comments-page">
+
+  <main class="container">
+
+    <div class="header comments-header">
+      <h1>暗　鞠</h1>
+      <p>みんなの感想</p>
+    </div>
+
+
+    <!-- 投稿フォーム -->
+    <section class="card">
+      <h2>感想を書く</h2>
+
+      <p class="muted">
+        お化け屋敷の感想を自由に書いてください。
+      </p>
+
+      <textarea
+        id="commentText"
+        maxlength="150"
+        placeholder="例：最後のところがめっちゃ怖かった！"
+      ></textarea>
+
+      <div class="comment-counter">
+        <span id="commentLength">0</span>
+        / 150文字
+      </div>
+
+      <button id="commentSubmitButton">
+        投稿する
+      </button>
+
+      <p
+        id="commentMessage"
+        class="muted"
+      ></p>
+    </section>
+
+
+    <!-- 感想一覧 -->
+    <section class="card">
+      <h2>みんなの感想</h2>
+
+      <div id="commentList">
+        読み込み中...
+      </div>
+    </section>
+
+
+    <div class="nav">
+      <a
+        class="button secondary"
+        href="index.html"
+      >
+        ← トップページ
+      </a>
+
+      <a
+        class="button secondary"
+        href="reserve.html"
+      >
+        🎟️ 予約する
+      </a>
+    </div>
+
+  </main>
+
+
+  <script type="module">
+
+    import {
+      db
+    } from "./firebase.js";
+
+    import {
+      collection,
+      addDoc,
+      query,
+      orderBy,
+      onSnapshot,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    const commentText =
+      document.getElementById(
+        "commentText"
+      );
+
+    const commentLength =
+      document.getElementById(
+        "commentLength"
+      );
+
+    const commentMessage =
+      document.getElementById(
+        "commentMessage"
+      );
+
+    const commentList =
+      document.getElementById(
+        "commentList"
+      );
+
+
+    // ==============================
+    // 文字数表示
+    // ==============================
+
+    commentText.addEventListener(
+      "input",
+      function() {
+
+        commentLength.textContent =
+          commentText.value.length;
+      }
+    );
+
+
+    // ==============================
+    // 感想投稿
+    // ==============================
+
+    async function submitComment() {
+
+      const text =
+        commentText.value.trim();
+
+
+      if (!text) {
+        commentMessage.textContent =
+          "感想を入力してください。";
+
+        return;
+      }
+
+
+      if (text.length > 150) {
+        commentMessage.textContent =
+          "感想は150文字以内で入力してください。";
+
+        return;
+      }
+
+
+      const confirmed =
+        confirm(
+          "この内容で感想を投稿しますか？"
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      const button =
+        document.getElementById(
+          "commentSubmitButton"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "投稿中...";
+
+
+      try {
+
+        await addDoc(
+          collection(
+            db,
+            "comments"
+          ),
+          {
+            text,
+            likeCount: 0,
+            status: "active",
+            createdAt:
+              serverTimestamp()
+          }
+        );
+
+
+        commentText.value = "";
+
+        commentLength.textContent =
+          "0";
+
+        commentMessage.textContent =
+          "✅ 感想を投稿しました。";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        commentMessage.textContent =
+          "❌ 投稿に失敗しました。";
+
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          "投稿する";
+      }
+    }
+
+
+    document
+      .getElementById(
+        "commentSubmitButton"
+      )
+      .addEventListener(
+        "click",
+        submitComment
+      );
+
+
+    // ==============================
+    // 感想一覧
+    // ==============================
+
+    const commentsQuery =
+      query(
+        collection(
+          db,
+          "comments"
+        ),
+        orderBy(
+          "createdAt",
+          "desc"
+        )
+      );
+
+
+    onSnapshot(
+      commentsQuery,
+
+      (snapshot) => {
+
+        commentList.innerHTML = "";
+
+
+        if (
+          snapshot.empty
+        ) {
+          commentList.innerHTML =
+            '<p class="muted">まだ感想はありません。</p>';
+
+          return;
+        }
+
+
+        snapshot.forEach(
+          (documentSnapshot) => {
+
+            const data =
+              documentSnapshot.data();
+
+
+            if (
+              data.status !==
+              "active"
+            ) {
+              return;
+            }
+
+
+            const item =
+              document.createElement(
+                "div"
+              );
+
+            item.className =
+              "comment-item";
+
+
+            const text =
+              document.createElement(
+                "p"
+              );
+
+            text.className =
+              "comment-text";
+
+            text.textContent =
+              data.text;
+
+
+            const meta =
+              document.createElement(
+                "div"
+              );
+
+            meta.className =
+              "comment-meta";
+
+
+            if (
+              data.createdAt &&
+              typeof data.createdAt.toDate ===
+                "function"
+            ) {
+
+              const date =
+                data.createdAt.toDate();
+
+              meta.textContent =
+                date.toLocaleString(
+                  "ja-JP",
+                  {
+                    month:
+                      "numeric",
+
+                    day:
+                      "numeric",
+
+                    hour:
+                      "2-digit",
+
+                    minute:
+                      "2-digit"
+                  }
+                );
+
+            } else {
+
+              meta.textContent =
+                "投稿直後";
+            }
+
+
+            item.appendChild(
+              text
+            );
+
+            item.appendChild(
+              meta
+            );
+
+
+            commentList.appendChild(
+              item
+            );
+          }
+        );
+      },
+
+      (error) => {
+
+        console.error(error);
+
+        commentList.textContent =
+          "❌ 感想を読み込めませんでした。";
+      }
+    );
+
+  </script>
+
+</body>
+</html>
