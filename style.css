@@ -2168,44 +2168,66 @@ hr {
    ========================================= */
 
 .fear-vote-card {
-  text-align: center;
+  text-align: left;
 }
 
 .fear-stars {
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 5px;
 
-  margin:
-    20px
-    0
-    12px;
+  gap: 10px;
+
+  margin: 24px 0 18px;
 }
 
-.fear-star {
+
+/* 通常のbuttonデザインを打ち消す */
+.fear-stars .fear-star {
+  display: inline-block;
+
   width: auto;
+  min-width: 0;
+  height: auto;
 
   margin: 0;
-  padding: 2px;
+  padding: 0;
 
-  border: 0;
+  border: none;
+  border-radius: 0;
 
   background: transparent;
 
-  color: #d7484f;
+  box-shadow: none;
 
-  font-size:
-    clamp(40px, 12vw, 58px);
+  color: #ff4b55;
 
+  font-size: clamp(42px, 11vw, 58px);
   line-height: 1;
 
-  box-shadow: none;
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-.fear-star:disabled {
+
+/* タップしたとき */
+.fear-stars .fear-star:active {
+  transform: scale(0.88);
+}
+
+
+/* disabledでも薄くしない */
+.fear-stars .fear-star:disabled {
   opacity: 1;
+  background: transparent;
+  color: #ff4b55;
 }
 
+
+/* 投票ボタン */
 .fear-vote-card #fearVoteButton {
-  margin-top: 10px;
+  width: 100%;
+  margin-top: 12px;
 }
