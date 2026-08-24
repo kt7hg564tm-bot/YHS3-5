@@ -1760,3 +1760,33 @@ hr {
 
   border-radius: 12px;
 }
+
+.comment-like-button {
+  width: auto;
+
+  margin-top: 10px;
+
+  padding: 8px 12px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(120, 10, 18, 0.18);
+
+  border:
+    1px solid rgba(210, 60, 70, 0.35);
+
+  color: #ff737c;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.comment-like-button:disabled {
+  opacity: 1;
+
+  background:
+    rgba(120, 10, 18, 0.28);
+
+  color: #ff5d67;
+}
