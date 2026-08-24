@@ -145,6 +145,41 @@
       const text =
         commentText.value.trim();
 
+      const lastPostKey =
+  "lastCommentPostTime";
+
+const lastPostTime =
+  Number(
+    localStorage.getItem(
+      lastPostKey
+    )
+  ) || 0;
+
+const now =
+  Date.now();
+
+const cooldown =
+  2 * 60 * 1000;
+
+const remainingTime =
+  cooldown -
+  (now - lastPostTime);
+
+if (
+  remainingTime > 0
+) {
+  const remainingSeconds =
+    Math.ceil(
+      remainingTime / 1000
+    );
+
+  commentMessage.textContent =
+    "連続投稿はできません。あと" +
+    remainingSeconds +
+    "秒待ってから投稿してください。";
+
+  return;
+}
 
       if (!text) {
         commentMessage.textContent =
@@ -209,8 +244,12 @@
 
         commentMessage.textContent =
           "✅ 感想を投稿しました。";
+localStorage.setItem(
+  lastPostKey,
+  String(Date.now())
+);
 
-
+        
       } catch (error) {
 
         console.error(error);
