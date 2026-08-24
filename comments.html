@@ -321,8 +321,14 @@ const fearVoteMessage =
     "fearVoteMessage"
   );
 
-const fearVotedKey =
-  "fearRatingVoted";
+let fearVoteVersion = 1;
+
+function fearVotedKey() {
+  return (
+    "fearRatingVoted_" +
+    fearVoteVersion
+  );
+}
 
 let selectedFearRating = 0;
 
@@ -366,7 +372,7 @@ function renderFearStars() {
 
 if (
   localStorage.getItem(
-    fearVotedKey
+    fearVotedKey()
   ) === "true"
 ) {
 
@@ -450,7 +456,7 @@ fearVoteButton.addEventListener(
 
     if (
       localStorage.getItem(
-        fearVotedKey
+        fearVotedKey()
       ) === "true"
     ) {
       return;
