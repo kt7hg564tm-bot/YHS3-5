@@ -1842,3 +1842,323 @@ hr {
       rgba(10, 8, 9, 0.78)
     );
 }
+
+/* =========================================
+   COMMENTS PAGE - KURAMARI
+   ========================================= */
+
+.comments-page {
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.86),
+      rgba(5, 0, 0, 0.96)
+    ),
+    url("IMG_1310.jpeg")
+    center top / cover
+    fixed;
+
+  background-color: #050505;
+
+  color: #f5efec;
+}
+
+
+.comments-page .container {
+  width: min(
+    720px,
+    calc(100% - 24px)
+  );
+
+  padding-top:
+    calc(24px + env(safe-area-inset-top));
+
+  padding-bottom:
+    calc(42px + env(safe-area-inset-bottom));
+}
+
+
+/* ==============================
+   HEADER
+   ============================== */
+
+.comments-header {
+  margin:
+    10px
+    0
+    26px;
+
+  text-align: center;
+}
+
+.comments-header h1 {
+  margin: 0;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size:
+    clamp(38px, 11vw, 58px);
+
+  font-weight: 400;
+
+  letter-spacing: 0.12em;
+
+  color: #fff0e9;
+
+  text-shadow:
+    0 0 5px rgba(193, 20, 20, 0.9),
+    0 0 18px rgba(112, 0, 0, 0.7);
+}
+
+.comments-header p {
+  margin-top: 5px;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size: 18px;
+
+  letter-spacing: 0.15em;
+
+  color:
+    rgba(255, 255, 255, 0.72);
+}
+
+
+/* ==============================
+   CARD
+   ============================== */
+
+.comments-page .card {
+  margin:
+    16px
+    0;
+
+  padding:
+    22px
+    20px;
+
+  border:
+    1px solid rgba(151, 30, 30, 0.52);
+
+  border-radius: 17px;
+
+  background:
+    rgba(5, 5, 7, 0.84);
+
+  backdrop-filter:
+    blur(13px);
+
+  -webkit-backdrop-filter:
+    blur(13px);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.40),
+    inset 0 0 22px rgba(87, 0, 0, 0.08);
+}
+
+
+.comments-page .card h2 {
+  margin:
+    0
+    0
+    18px;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size:
+    clamp(24px, 7vw, 34px);
+
+  font-weight: 400;
+
+  color: #fff7f2;
+}
+
+
+/* ==============================
+   TEXTAREA
+   ============================== */
+
+.comments-page #commentText {
+  width: 100%;
+  min-height: 150px;
+
+  padding:
+    15px
+    16px;
+
+  resize: vertical;
+
+  border:
+    1px solid rgba(180, 64, 64, 0.48);
+
+  border-radius: 12px;
+
+  background:
+    rgba(4, 4, 6, 0.92);
+
+  color: #fff;
+
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.comments-page #commentText::placeholder {
+  color:
+    rgba(255, 255, 255, 0.35);
+}
+
+
+/* 文字数 */
+
+.comment-counter {
+  margin:
+    7px
+    0
+    14px;
+
+  text-align: right;
+
+  color:
+    rgba(255, 255, 255, 0.48);
+
+  font-size: 13px;
+}
+
+
+/* ==============================
+   POST BUTTON
+   ============================== */
+
+.comments-page #commentSubmitButton {
+  border:
+    1px solid rgba(255, 76, 76, 0.35);
+
+  background:
+    linear-gradient(
+      135deg,
+      #8d090e,
+      #c32629
+    );
+
+  box-shadow:
+    0 6px 18px rgba(129, 0, 0, 0.28);
+}
+
+
+/* ==============================
+   COMMENTS
+   ============================== */
+
+.comment-item {
+  padding:
+    17px
+    0;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.09);
+}
+
+.comment-item:last-child {
+  border-bottom: 0;
+}
+
+.comment-text {
+  margin:
+    0
+    0
+    9px;
+
+  color: #f7efec;
+
+  line-height: 1.7;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.comment-meta {
+  color:
+    rgba(255, 255, 255, 0.44);
+
+  font-size: 12px;
+}
+
+
+/* ==============================
+   LIKE
+   ============================== */
+
+.comments-page .comment-like-button {
+  width: auto;
+
+  margin-top: 10px;
+
+  padding:
+    8px
+    13px;
+
+  border-radius: 999px;
+
+  border:
+    1px solid rgba(221, 60, 70, 0.42);
+
+  background:
+    rgba(103, 8, 15, 0.26);
+
+  color: #ff747d;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.comments-page .comment-like-button:disabled {
+  opacity: 1;
+
+  background:
+    rgba(135, 10, 19, 0.36);
+
+  color: #ff5f69;
+}
+
+
+/* ==============================
+   MUTED
+   ============================== */
+
+.comments-page .muted {
+  color:
+    rgba(234, 225, 223, 0.68);
+
+  line-height: 1.7;
+}
+
+
+/* ==============================
+   NAV
+   ============================== */
+
+.comments-page .nav .button {
+  border:
+    1px solid rgba(151, 50, 50, 0.35);
+
+  background:
+    rgba(8, 8, 10, 0.84);
+
+  color: #f5e9e5;
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
