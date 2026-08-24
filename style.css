@@ -1826,3 +1826,19 @@ hr {
 
   font-size: 13px;
 }
+
+.home-action-comments {
+  grid-column: 1 / -1;
+
+  min-height: 82px;
+
+  border-color:
+    rgba(166, 46, 52, 0.48);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(55, 6, 10, 0.58),
+      rgba(10, 8, 9, 0.78)
+    );
+}
