@@ -699,25 +699,28 @@ async function updateReservationStatus(
     }
   );
 }
-    async function deleteAllTestData() {
+
+async function deleteAllTestData() {
 
   const firstConfirm =
     confirm(
-      "すべての予約テストデータを削除しますか？"
+      "予約・予約枠・感想・恐怖度投票のテストデータをすべて削除しますか？"
     );
 
   if (!firstConfirm) {
     return;
   }
 
+
   const secondConfirm =
     confirm(
-      "⚠️ この操作は取り消せません。本当に完全削除しますか？"
+      "⚠️ この操作は取り消せません。本当にすべて完全削除しますか？"
     );
 
   if (!secondConfirm) {
     return;
   }
+
 
   const message =
     document.getElementById(
@@ -729,12 +732,18 @@ async function updateReservationStatus(
       "deleteTestDataButton"
     );
 
+
   button.disabled = true;
 
   message.textContent =
     "削除中...";
 
+
   try {
+
+    // ==============================
+    // 予約データ
+    // ==============================
 
     const reservationsSnapshot =
       await getDocs(
@@ -743,6 +752,11 @@ async function updateReservationStatus(
           "reservations"
         )
       );
+
+
+    // ==============================
+    // 予約枠データ
+    // ==============================
 
     const slotsSnapshot =
       await getDocs(
@@ -753,16 +767,44 @@ async function updateReservationStatus(
       );
 
 
+    // ==============================
+    // 感想データ
+    // ==============================
+
+    const commentsSnapshot =
+      await getDocs(
+        collection(
+          db,
+          "comments"
+        )
+      );
+
+
+    // ==============================
+    // 削除対象をまとめる
+    // ==============================
+
     const documents = [
       ...reservationsSnapshot.docs,
-      ...slotsSnapshot.docs
+      ...slotsSnapshot.docs,
+      ...commentsSnapshot.docs,
+
+      // 恐怖度投票の集計
+      {
+        ref: doc(
+          db,
+          "publicStats",
+          "fearRating"
+        )
+      }
     ];
 
 
     // Firestoreの一括書き込みは
-    // 1回あたりの件数に上限があるため、
-    // 400件ずつ処理する
+    // 1回あたりの件数に上限があるため
+    // 400件ずつ削除
     const chunkSize = 400;
+
 
     for (
       let i = 0;
@@ -773,26 +815,31 @@ async function updateReservationStatus(
       const batch =
         writeBatch(db);
 
+
       const chunk =
         documents.slice(
           i,
           i + chunkSize
         );
 
+
       chunk.forEach(
-        (documentSnapshot) => {
+        (documentItem) => {
+
           batch.delete(
-            documentSnapshot.ref
+            documentItem.ref
           );
         }
       );
+
 
       await batch.commit();
     }
 
 
     message.textContent =
-      "✅ テストデータを完全削除しました。";
+      "✅ 予約・感想・恐怖度投票のテストデータを完全削除しました。";
+
 
   } catch (error) {
 
@@ -801,12 +848,14 @@ async function updateReservationStatus(
     message.textContent =
       "❌ テストデータの削除に失敗しました。";
 
+
   } finally {
 
     button.disabled =
       false;
   }
 }
+    
     function renderReservations(reservations) {
   const list =
     document.getElementById(
