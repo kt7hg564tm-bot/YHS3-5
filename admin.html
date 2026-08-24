@@ -465,6 +465,15 @@ async function loginStaff() {
         ? "受付中"
         : "受付停止中";
 
+document
+  .getElementById(
+    "currentCommentsStatus"
+  )
+  .textContent =
+    data.commentsOpen !== false
+      ? "受付中"
+      : "受付停止中";
+    
     document.getElementById("waitCount").value =
       data.waitCount;
 
@@ -1183,6 +1192,29 @@ document
   .addEventListener("click", function() {
     setReservationOpen(false);
   });
+
+document
+  .getElementById(
+    "commentsOpenButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+      setCommentsOpen(true);
+    }
+  );
+
+document
+  .getElementById(
+    "commentsCloseButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+      setCommentsOpen(false);
+    }
+  );
+    
     document
   .getElementById(
     "deleteTestDataButton"
