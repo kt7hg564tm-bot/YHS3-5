@@ -224,15 +224,7 @@ import {
   runTransaction
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-let fearVoteVersion = 1;
-
-function fearVotedKey() {
-  return (
-    "fearRatingVoted_" +
-    fearVoteVersion
-  );
-}
-    
+  
     const commentText =
       document.getElementById(
         "commentText"
@@ -266,11 +258,17 @@ watchSettings(
     commentsOpen =
       data.commentsOpen !== false;
 
+    fearVoteVersion =
+      Number(
+        data.fearVoteVersion
+      ) || 1;
+
+    updateFearVoteState();
+
     const button =
       document.getElementById(
         "commentSubmitButton"
       );
-
 
     if (commentsOpen) {
 
@@ -374,33 +372,64 @@ function renderFearStars() {
   );
 }
 
-
 // ==============================
-// 投票済み端末
+// 投票状態を反映
 // ==============================
 
-if (
-  localStorage.getItem(
-    fearVotedKey()
-  ) === "true"
-) {
+function updateFearVoteState() {
+
+  const alreadyVoted =
+    localStorage.getItem(
+      fearVotedKey()
+    ) === "true";
+
+
+  if (alreadyVoted) {
+
+    fearStars.forEach(
+      (star) => {
+        star.disabled = true;
+      }
+    );
+
+    fearVoteButton.disabled =
+      true;
+
+    fearVoteButton.textContent =
+      "投票済み";
+
+    fearSelection.textContent =
+      "この端末からは投票済みです。";
+
+    return;
+  }
+
+
+  // 新しい投票バージョンなら
+  // 再び投票可能にする
 
   fearStars.forEach(
     (star) => {
-      star.disabled = true;
+      star.disabled = false;
     }
   );
+
+  selectedFearRating = 0;
+
+  renderFearStars();
 
   fearVoteButton.disabled =
     true;
 
   fearVoteButton.textContent =
-    "投票済み";
+    "投票する";
 
   fearSelection.textContent =
-    "この端末からは投票済みです。";
-}
+    "星をタップして選択してください。";
 
+  fearVoteMessage.textContent =
+    "";
+}
 
 // ==============================
 // 星を選択
@@ -415,7 +444,7 @@ fearStars.forEach(
 
         if (
           localStorage.getItem(
-            fearVotedKey
+            fearVotedKey()
           ) === "true"
         ) {
           return;
@@ -560,7 +589,7 @@ fearVoteButton.addEventListener(
 
 
       localStorage.setItem(
-        fearVotedKey,
+        fearVotedKey(),
         "true"
       );
 
