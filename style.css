@@ -2162,3 +2162,50 @@ hr {
   -webkit-backdrop-filter:
     blur(10px);
 }
+
+/* =========================================
+   恐怖度投票
+   ========================================= */
+
+.fear-vote-card {
+  text-align: center;
+}
+
+.fear-stars {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+
+  margin:
+    20px
+    0
+    12px;
+}
+
+.fear-star {
+  width: auto;
+
+  margin: 0;
+  padding: 2px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #d7484f;
+
+  font-size:
+    clamp(40px, 12vw, 58px);
+
+  line-height: 1;
+
+  box-shadow: none;
+}
+
+.fear-star:disabled {
+  opacity: 1;
+}
+
+.fear-vote-card #fearVoteButton {
+  margin-top: 10px;
+}
