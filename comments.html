@@ -198,11 +198,20 @@ watchSettings(
 
     async function submitComment() {
 
-      const text =
-        commentText.value.trim();
+  if (!commentsOpen) {
 
-      const lastPostKey =
-  "lastCommentPostTime";
+    commentMessage.textContent =
+      "🔴 現在、感想の投稿受付を停止しています。";
+
+    return;
+  }
+
+
+  const text =
+    commentText.value.trim();
+
+  const lastPostKey =
+    "lastCommentPostTime";
 
 const lastPostTime =
   Number(
