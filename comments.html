@@ -224,6 +224,15 @@ import {
   runTransaction
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+let fearVoteVersion = 1;
+
+function fearVotedKey() {
+  return (
+    "fearRatingVoted_" +
+    fearVoteVersion
+  );
+}
+    
     const commentText =
       document.getElementById(
         "commentText"
