@@ -251,14 +251,6 @@ import {
         .textContent =
           data.waitCount;
 
-
-      // 基本待ち時間
-      document
-        .getElementById("baseMinutes")
-        .textContent =
-          data.baseMinutes;
-
-
       // 混雑状況
       const status =
         document.getElementById(
@@ -340,6 +332,115 @@ import {
 
     watchSettings(render);
 
+// ==============================
+// みんなの恐怖度
+// ==============================
+
+const fearRatingRef =
+  doc(
+    db,
+    "publicStats",
+    "fearRating"
+  );
+
+
+onSnapshot(
+  fearRatingRef,
+
+  (snapshot) => {
+
+    const fearRating =
+      document.getElementById(
+        "fearRating"
+      );
+
+    const fearVotes =
+      document.getElementById(
+        "fearVotes"
+      );
+
+
+    // まだ投票がない
+    if (!snapshot.exists()) {
+
+      fearRating.textContent =
+        "投票なし";
+
+      fearVotes.textContent =
+        "まだ投票はありません";
+
+      return;
+    }
+
+
+    const data =
+      snapshot.data();
+
+
+    const totalScore =
+      Number(
+        data.totalScore
+      ) || 0;
+
+    const voteCount =
+      Number(
+        data.voteCount
+      ) || 0;
+
+
+    if (voteCount <= 0) {
+
+      fearRating.textContent =
+        "投票なし";
+
+      fearVotes.textContent =
+        "まだ投票はありません";
+
+      return;
+    }
+
+
+    // 平均恐怖度
+    const average =
+      totalScore /
+      voteCount;
+
+
+    fearRating.textContent =
+      average.toFixed(1) +
+      " / 5";
+
+
+    fearVotes.textContent =
+      voteCount +
+      "票";
+  },
+
+  (error) => {
+
+    console.error(
+      "恐怖度の読み込みに失敗しました:",
+      error
+    );
+
+
+    document
+      .getElementById(
+        "fearRating"
+      )
+      .textContent =
+        "--";
+
+
+    document
+      .getElementById(
+        "fearVotes"
+      )
+      .textContent =
+        "読み込めませんでした";
+  }
+);
+    
   </script>
 
 </body>
