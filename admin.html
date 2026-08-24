@@ -836,7 +836,15 @@ async function deleteAllTestData() {
       await batch.commit();
     }
 
-
+await saveSettings({
+  fearVoteVersion:
+    (
+      Number(
+        currentData?.fearVoteVersion
+      ) || 1
+    ) + 1
+});
+    
     message.textContent =
       "✅ 予約・感想・恐怖度投票のテストデータを完全削除しました。";
 
