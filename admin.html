@@ -276,8 +276,34 @@
   <h2>💬 感想管理</h2>
 
   <p class="muted">
-    来場者から投稿された感想の確認・削除を行います。
+    来場者から投稿された感想の
+    確認・削除を行います。
   </p>
+
+  <div class="notice">
+    感想投稿：
+    <strong id="currentCommentsStatus">
+      --
+    </strong>
+  </div>
+
+  <div class="grid">
+    <button id="commentsOpenButton">
+      🟢 感想受付開始
+    </button>
+
+    <button
+      id="commentsCloseButton"
+      class="danger"
+    >
+      🔴 感想受付停止
+    </button>
+  </div>
+
+  <p
+    id="commentsMessage"
+    class="muted"
+  ></p>
 
   <a
     class="button secondary"
