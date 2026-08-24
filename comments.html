@@ -91,14 +91,15 @@
     } from "./firebase.js";
 
     import {
-      collection,
-      addDoc,
-      query,
-      orderBy,
-      onSnapshot,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
+  doc,
+  runTransaction
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
     const commentText =
       document.getElementById(
@@ -360,7 +361,119 @@
               meta
             );
 
+const likeButton =
+  document.createElement(
+    "button"
+  );
 
+likeButton.className =
+  "comment-like-button";
+
+const likedKey =
+  "likedComment_" +
+  documentSnapshot.id;
+
+const alreadyLiked =
+  localStorage.getItem(
+    likedKey
+  ) === "true";
+
+likeButton.textContent =
+  (alreadyLiked ? "❤️ " : "♡ ") +
+  (Number(data.likeCount) || 0);
+
+likeButton.disabled =
+  alreadyLiked;
+
+
+likeButton.addEventListener(
+  "click",
+  async function() {
+
+    if (
+      localStorage.getItem(
+        likedKey
+      ) === "true"
+    ) {
+      return;
+    }
+
+    likeButton.disabled =
+      true;
+
+    try {
+
+      const commentRef =
+        doc(
+          db,
+          "comments",
+          documentSnapshot.id
+        );
+
+      await runTransaction(
+        db,
+        async (transaction) => {
+
+          const snapshot =
+            await transaction.get(
+              commentRef
+            );
+
+          if (
+            !snapshot.exists()
+          ) {
+            throw new Error(
+              "感想が見つかりません。"
+            );
+          }
+
+          const current =
+            snapshot.data();
+
+          transaction.update(
+            commentRef,
+            {
+              likeCount:
+                (Number(
+                  current.likeCount
+                ) || 0) + 1
+            }
+          );
+        }
+      );
+
+      localStorage.setItem(
+        likedKey,
+        "true"
+      );
+
+      likeButton.textContent =
+        "❤️ " +
+        (
+          (Number(
+            data.likeCount
+          ) || 0) + 1
+        );
+
+    } catch (error) {
+
+      console.error(error);
+
+      likeButton.disabled =
+        false;
+
+      alert(
+        "いいねに失敗しました。"
+      );
+    }
+  }
+);
+
+
+item.appendChild(
+  likeButton
+);
+            
             commentList.appendChild(
               item
             );
