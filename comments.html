@@ -249,6 +249,289 @@ watchSettings(
   }
 );
 
+// ==============================
+// 恐怖度投票
+// ==============================
+
+const fearStars =
+  document.querySelectorAll(
+    ".fear-star"
+  );
+
+const fearVoteButton =
+  document.getElementById(
+    "fearVoteButton"
+  );
+
+const fearSelection =
+  document.getElementById(
+    "fearSelection"
+  );
+
+const fearVoteMessage =
+  document.getElementById(
+    "fearVoteMessage"
+  );
+
+const fearVotedKey =
+  "fearRatingVoted";
+
+let selectedFearRating = 0;
+
+
+// 評価の説明
+const fearLabels = {
+  1: "余裕だった",
+  2: "少し怖い",
+  3: "怖い",
+  4: "かなり怖い",
+  5: "めちゃくちゃ怖い"
+};
+
+
+// ==============================
+// 星の表示
+// ==============================
+
+function renderFearStars() {
+
+  fearStars.forEach(
+    (star) => {
+
+      const rating =
+        Number(
+          star.dataset.rating
+        );
+
+      star.textContent =
+        rating <= selectedFearRating
+          ? "★"
+          : "☆";
+    }
+  );
+}
+
+
+// ==============================
+// 投票済み端末
+// ==============================
+
+if (
+  localStorage.getItem(
+    fearVotedKey
+  ) === "true"
+) {
+
+  fearStars.forEach(
+    (star) => {
+      star.disabled = true;
+    }
+  );
+
+  fearVoteButton.disabled =
+    true;
+
+  fearVoteButton.textContent =
+    "投票済み";
+
+  fearSelection.textContent =
+    "この端末からは投票済みです。";
+}
+
+
+// ==============================
+// 星を選択
+// ==============================
+
+fearStars.forEach(
+  (star) => {
+
+    star.addEventListener(
+      "click",
+      function() {
+
+        if (
+          localStorage.getItem(
+            fearVotedKey
+          ) === "true"
+        ) {
+          return;
+        }
+
+
+        selectedFearRating =
+          Number(
+            star.dataset.rating
+          );
+
+
+        renderFearStars();
+
+
+        fearSelection.textContent =
+          selectedFearRating +
+          "：" +
+          fearLabels[
+            selectedFearRating
+          ];
+
+
+        fearVoteButton.disabled =
+          false;
+      }
+    );
+  }
+);
+
+
+// ==============================
+// 投票
+// ==============================
+
+fearVoteButton.addEventListener(
+  "click",
+  async function() {
+
+    if (
+      selectedFearRating < 1 ||
+      selectedFearRating > 5
+    ) {
+      return;
+    }
+
+
+    if (
+      localStorage.getItem(
+        fearVotedKey
+      ) === "true"
+    ) {
+      return;
+    }
+
+
+    const confirmed =
+      confirm(
+        "恐怖度 " +
+        selectedFearRating +
+        " で投票しますか？"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    fearVoteButton.disabled =
+      true;
+
+    fearVoteButton.textContent =
+      "投票中...";
+
+
+    try {
+
+      const fearRef =
+        doc(
+          db,
+          "publicStats",
+          "fearRating"
+        );
+
+
+      await runTransaction(
+        db,
+        async (transaction) => {
+
+          const snapshot =
+            await transaction.get(
+              fearRef
+            );
+
+
+          // 最初の投票
+          if (
+            !snapshot.exists()
+          ) {
+
+            transaction.set(
+              fearRef,
+              {
+                totalScore:
+                  selectedFearRating,
+
+                voteCount: 1
+              }
+            );
+
+            return;
+          }
+
+
+          // 2票目以降
+          const data =
+            snapshot.data();
+
+
+          transaction.update(
+            fearRef,
+            {
+              totalScore:
+                (
+                  Number(
+                    data.totalScore
+                  ) || 0
+                ) +
+                selectedFearRating,
+
+              voteCount:
+                (
+                  Number(
+                    data.voteCount
+                  ) || 0
+                ) + 1
+            }
+          );
+        }
+      );
+
+
+      localStorage.setItem(
+        fearVotedKey,
+        "true"
+      );
+
+
+      fearVoteMessage.textContent =
+        "✅ 投票ありがとうございました！";
+
+      fearVoteButton.textContent =
+        "投票済み";
+
+
+      fearStars.forEach(
+        (star) => {
+          star.disabled = true;
+        }
+      );
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      fearVoteMessage.textContent =
+        "❌ 投票に失敗しました。";
+
+      fearVoteButton.disabled =
+        false;
+
+      fearVoteButton.textContent =
+        "投票する";
+    }
+  }
+);
+    
     // ==============================
     // 文字数表示
     // ==============================
