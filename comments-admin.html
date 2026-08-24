@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>感想管理｜スタッフ</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css?v=50"
+  >
+</head>
+
+<body>
+
+  <!-- 未ログイン表示 -->
+  <section
+    id="authMessage"
+    class="container"
+  >
+    <div class="card">
+      <h2>🔐 スタッフ専用</h2>
+
+      <p class="muted">
+        ログイン状態を確認しています...
+      </p>
+    </div>
+  </section>
+
+
+  <!-- 管理画面 -->
+  <main
+    id="commentsAdminContent"
+    class="container"
+    style="display:none"
+  >
+
+    <div class="header">
+      <h1>💬 感想管理</h1>
+
+      <p>
+        投稿された感想の確認・削除
+      </p>
+    </div>
+
+
+    <section class="card">
+      <h2>投稿一覧</h2>
+
+      <p class="muted">
+        新しい投稿から順に表示されます。
+      </p>
+
+      <div id="adminCommentList">
+        読み込み中...
+      </div>
+    </section>
+
+
+    <div class="nav">
+
+      <a
+        class="button secondary"
+        href="admin.html"
+      >
+        ← スタッフ画面
+      </a>
+
+      <a
+        class="button secondary"
+        href="comments.html"
+      >
+        💬 感想ページ
+      </a>
+
+    </div>
+
+  </main>
+
+
+  <script type="module">
+
+    import {
+      app,
+      db
+    } from "./firebase.js";
+
+
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+    import {
+      collection,
+      query,
+      orderBy,
+      onSnapshot,
+      doc,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    const auth =
+      getAuth(app);
+
+
+    const STAFF_UID =
+      "Yddtb8JGURYkTxc1undiaiRAHxJ2";
+
+
+    const authMessage =
+      document.getElementById(
+        "authMessage"
+      );
+
+    const commentsAdminContent =
+      document.getElementById(
+        "commentsAdminContent"
+      );
+
+    const adminCommentList =
+      document.getElementById(
+        "adminCommentList"
+      );
+
+
+    // ==============================
+    // 認証確認
+    // ==============================
+
+    onAuthStateChanged(
+      auth,
+      (user) => {
+
+        if (
+          user &&
+          user.uid === STAFF_UID
+        ) {
+
+          authMessage.style.display =
+            "none";
+
+          commentsAdminContent.style.display =
+            "block";
+
+          startCommentsWatch();
+
+        } else {
+
+          commentsAdminContent.style.display =
+            "none";
+
+          authMessage.style.display =
+            "block";
+
+          authMessage.innerHTML = `
+            <div class="card">
+              <h2>🔐 スタッフ専用</h2>
+
+              <p class="muted">
+                このページを利用するには、
+                スタッフログインが必要です。
+              </p>
+
+              <a
+                class="button"
+                href="admin.html"
+              >
+                スタッフログインへ
+              </a>
+
+              <div style="height:10px"></div>
+
+              <a
+                class="button secondary"
+                href="index.html"
+              >
+                ← トップページへ戻る
+              </a>
+            </div>
+          `;
+        }
+      }
+    );
+
+
+    // ==============================
+    // 日時表示
+    // ==============================
+
+    function formatDateTime(
+      timestamp
+    ) {
+
+      if (
+        !timestamp ||
+        typeof timestamp.toDate !==
+          "function"
+      ) {
+        return "日時不明";
+      }
+
+
+      const date =
+        timestamp.toDate();
+
+
+      return date.toLocaleString(
+        "ja-JP",
+        {
+          month:
+            "numeric",
+
+          day:
+            "numeric",
+
+          hour:
+            "2-digit",
+
+          minute:
+            "2-digit"
+        }
+      );
+    }
+
+
+    // ==============================
+    // コメント監視
+    // ==============================
+
+    let unsubscribeComments =
+      null;
+
+
+    function startCommentsWatch() {
+
+      if (
+        unsubscribeComments
+      ) {
+        return;
+      }
+
+
+      const commentsQuery =
+        query(
+          collection(
+            db,
+            "comments"
+          ),
+          orderBy(
+            "createdAt",
+            "desc"
+          )
+        );
+
+
+      unsubscribeComments =
+        onSnapshot(
+          commentsQuery,
+
+          (snapshot) => {
+
+            adminCommentList.innerHTML =
+              "";
+
+
+            if (
+              snapshot.empty
+            ) {
+
+              adminCommentList.innerHTML =
+                '<p class="muted">投稿はまだありません。</p>';
+
+              return;
+            }
+
+
+            snapshot.forEach(
+              (
+                documentSnapshot
+              ) => {
+
+                const data =
+                  documentSnapshot.data();
+
+
+                const item =
+                  document.createElement(
+                    "div"
+                  );
+
+                item.className =
+                  "admin-comment-item";
+
+
+                const text =
+                  document.createElement(
+                    "p"
+                  );
+
+                text.className =
+                  "admin-comment-text";
+
+                text.textContent =
+                  data.text ||
+                  "(本文なし)";
+
+
+                const meta =
+                  document.createElement(
+                    "div"
+                  );
+
+                meta.className =
+                  "admin-comment-meta";
+
+                meta.textContent =
+                  formatDateTime(
+                    data.createdAt
+                  ) +
+                  "　❤️ " +
+                  (
+                    Number(
+                      data.likeCount
+                    ) || 0
+                  );
+
+
+                const deleteButton =
+                  document.createElement(
+                    "button"
+                  );
+
+                deleteButton.className =
+                  "danger small-btn";
+
+                deleteButton.textContent =
+                  "🗑️ 削除";
+
+
+                deleteButton.addEventListener(
+                  "click",
+                  async function() {
+
+                    const confirmed =
+                      confirm(
+                        "この感想を削除しますか？"
+                      );
+
+
+                    if (
+                      !confirmed
+                    ) {
+                      return;
+                    }
+
+
+                    deleteButton.disabled =
+                      true;
+
+                    deleteButton.textContent =
+                      "削除中...";
+
+
+                    try {
+
+                      await deleteDoc(
+                        doc(
+                          db,
+                          "comments",
+                          documentSnapshot.id
+                        )
+                      );
+
+
+                    } catch (
+                      error
+                    ) {
+
+                      console.error(
+                        error
+                      );
+
+                      alert(
+                        "感想の削除に失敗しました。"
+                      );
+
+
+                      deleteButton.disabled =
+                        false;
+
+                      deleteButton.textContent =
+                        "🗑️ 削除";
+                    }
+                  }
+                );
+
+
+                item.appendChild(
+                  text
+                );
+
+                item.appendChild(
+                  meta
+                );
+
+                item.appendChild(
+                  deleteButton
+                );
+
+
+                adminCommentList.appendChild(
+                  item
+                );
+              }
+            );
+          },
+
+          (error) => {
+
+            console.error(
+              error
+            );
+
+            adminCommentList.textContent =
+              "❌ 感想一覧を読み込めませんでした。";
+          }
+        );
+    }
+
+  </script>
+
+</body>
+</html>
