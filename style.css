@@ -2471,3 +2471,35 @@ hr {
   transform:
     scale(0.98);
 }
+
+/* =========================================
+   トップページ - みんなの恐怖度
+   ========================================= */
+
+.home-fear-item {
+  text-align: center;
+}
+
+.home-fear-rating {
+  margin-top: 5px;
+
+  font-size: clamp(19px, 5vw, 27px);
+  font-weight: 800;
+
+  line-height: 1.1;
+
+  color: #ff4650;
+
+  text-shadow:
+    0 0 10px
+    rgba(255, 40, 50, 0.25);
+}
+
+.home-fear-votes {
+  margin-top: 5px;
+
+  font-size: 11px;
+  line-height: 1.25;
+
+  color: rgba(235, 225, 225, 0.62);
+}
