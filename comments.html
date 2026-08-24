@@ -125,6 +125,58 @@ import {
         "commentList"
       );
 
+    let commentsOpen = true;
+
+
+// ==============================
+// 感想受付状態
+// ==============================
+
+watchSettings(
+  function(data) {
+
+    commentsOpen =
+      data.commentsOpen !== false;
+
+    const button =
+      document.getElementById(
+        "commentSubmitButton"
+      );
+
+
+    if (commentsOpen) {
+
+      commentText.disabled =
+        false;
+
+      button.disabled =
+        false;
+
+      button.textContent =
+        "投稿する";
+
+      commentText.placeholder =
+        "例：最後のところがめっちゃ怖かった！";
+
+    } else {
+
+      commentText.disabled =
+        true;
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "感想受付停止中";
+
+      commentText.placeholder =
+        "現在、感想の投稿受付を停止しています。";
+
+      commentMessage.textContent =
+        "🔴 現在、感想の投稿受付を停止しています。";
+    }
+  }
+);
 
     // ==============================
     // 文字数表示
