@@ -33,6 +33,44 @@
     暗鞠はどれくらい怖かった？
   </p>
 
+
+  <!-- 怖さの基準 -->
+  <div class="fear-scale">
+
+    <div class="fear-level">
+      <span class="fear-level-number">1</span>
+      <span class="fear-level-label">余裕</span>
+      <span class="fear-level-emoji">😎</span>
+    </div>
+
+    <div class="fear-level">
+      <span class="fear-level-number">2</span>
+      <span class="fear-level-label">少し怖い</span>
+      <span class="fear-level-emoji">😥</span>
+    </div>
+
+    <div class="fear-level">
+      <span class="fear-level-number">3</span>
+      <span class="fear-level-label">怖い</span>
+      <span class="fear-level-emoji">😨</span>
+    </div>
+
+    <div class="fear-level">
+      <span class="fear-level-number">4</span>
+      <span class="fear-level-label">かなり怖い</span>
+      <span class="fear-level-emoji">😱</span>
+    </div>
+
+    <div class="fear-level">
+      <span class="fear-level-number">5</span>
+      <span class="fear-level-label">めちゃ怖い</span>
+      <span class="fear-level-emoji">💀</span>
+    </div>
+
+  </div>
+
+
+  <!-- 星 -->
   <div
     id="fearStars"
     class="fear-stars"
@@ -73,20 +111,30 @@
     >☆</button>
   </div>
 
+
   <p
     id="fearSelection"
-    class="muted"
+    class="muted fear-selection"
   >
     星をタップして選択してください。
   </p>
 
+
+  <!-- 1回限りの注意 -->
+  <p class="fear-vote-warning">
+    ⚠️ この投票は一回しかできないので注意してください。
+  </p>
+
+
   <button
     id="fearVoteButton"
+    class="fear-vote-submit"
     type="button"
     disabled
   >
     投票する
   </button>
+
 
   <p
     id="fearVoteMessage"
