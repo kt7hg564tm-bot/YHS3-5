@@ -1790,3 +1790,39 @@ hr {
 
   color: #ff5d67;
 }
+
+/* =========================================
+   COMMENTS ADMIN
+   ========================================= */
+
+.admin-comment-item {
+  padding: 16px 0;
+
+  border-bottom:
+    1px solid var(--border);
+}
+
+.admin-comment-item:last-child {
+  border-bottom: 0;
+}
+
+.admin-comment-text {
+  margin:
+    0
+    0
+    10px;
+
+  line-height: 1.65;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+}
+
+.admin-comment-meta {
+  margin-bottom: 10px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
