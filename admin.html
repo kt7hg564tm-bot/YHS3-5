@@ -1121,6 +1121,38 @@ async function setReservationOpen(isOpen) {
       "❌ 予約受付状態の変更に失敗しました。";
   }
 }
+
+async function setCommentsOpen(
+  isOpen
+) {
+  try {
+
+    await saveSettings({
+      commentsOpen: isOpen
+    });
+
+    document
+      .getElementById(
+        "commentsMessage"
+      )
+      .textContent =
+        isOpen
+          ? "🟢 感想の受付を開始しました。"
+          : "🔴 感想の受付を停止しました。";
+
+  } catch (error) {
+
+    console.error(error);
+
+    document
+      .getElementById(
+        "commentsMessage"
+      )
+      .textContent =
+        "❌ 感想受付状態の変更に失敗しました。";
+  }
+}
+    
   document
     .getElementById("saveButton")
     .addEventListener("click", saveWaitSettings);
