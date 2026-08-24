@@ -24,7 +24,77 @@
       <p>みんなの感想</p>
     </div>
 
+<!-- 恐怖度投票 -->
+<section class="card fear-vote-card">
 
+  <h2>😱 恐怖度を教えて！</h2>
+
+  <p class="muted">
+    暗鞠はどれくらい怖かった？
+  </p>
+
+  <div
+    id="fearStars"
+    class="fear-stars"
+  >
+    <button
+      type="button"
+      class="fear-star"
+      data-rating="1"
+      aria-label="恐怖度1"
+    >☆</button>
+
+    <button
+      type="button"
+      class="fear-star"
+      data-rating="2"
+      aria-label="恐怖度2"
+    >☆</button>
+
+    <button
+      type="button"
+      class="fear-star"
+      data-rating="3"
+      aria-label="恐怖度3"
+    >☆</button>
+
+    <button
+      type="button"
+      class="fear-star"
+      data-rating="4"
+      aria-label="恐怖度4"
+    >☆</button>
+
+    <button
+      type="button"
+      class="fear-star"
+      data-rating="5"
+      aria-label="恐怖度5"
+    >☆</button>
+  </div>
+
+  <p
+    id="fearSelection"
+    class="muted"
+  >
+    星をタップして選択してください。
+  </p>
+
+  <button
+    id="fearVoteButton"
+    type="button"
+    disabled
+  >
+    投票する
+  </button>
+
+  <p
+    id="fearVoteMessage"
+    class="muted"
+  ></p>
+
+</section>
+    
     <!-- 投稿フォーム -->
     <section class="card">
       <h2>感想を書く</h2>
@@ -102,6 +172,7 @@ import {
   onSnapshot,
   serverTimestamp,
   doc,
+  getDoc,
   runTransaction
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
