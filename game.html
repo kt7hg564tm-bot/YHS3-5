@@ -609,21 +609,583 @@ const chaseMessage =
       }
     );
 
+// ==============================
+// 最後の部屋
+// ==============================
 
-    // ==============================
-    // 最後の部屋
-    // ==============================
+finalRoomButton.addEventListener(
+  "click",
+  function() {
 
-    finalRoomButton.addEventListener(
-      "click",
-      function() {
+    showScreen(
+      chaseIntro
+    );
+  }
+);
 
-        alert(
-          "次は9マス鬼ごっこを実装します。"
-        );
-      }
+
+// ==============================
+// 9マス鬼ごっこ
+// ==============================
+
+let playerPosition = 0;
+
+let ghostPosition = 8;
+
+let chaseTurn = 0;
+
+let chaseLocked = false;
+
+
+const chaseMaxTurn = 10;
+
+
+// ==============================
+// マスの座標
+// ==============================
+
+function rowOf(position) {
+  return Math.floor(
+    position / 3
+  );
+}
+
+
+function colOf(position) {
+  return position % 3;
+}
+
+
+// ==============================
+// 隣接マス
+// 上下左右のみ
+// ==============================
+
+function getNeighbors(
+  position
+) {
+
+  const row =
+    rowOf(position);
+
+  const col =
+    colOf(position);
+
+  const result = [];
+
+
+  if (row > 0) {
+    result.push(
+      position - 3
+    );
+  }
+
+  if (row < 2) {
+    result.push(
+      position + 3
+    );
+  }
+
+  if (col > 0) {
+    result.push(
+      position - 1
+    );
+  }
+
+  if (col < 2) {
+    result.push(
+      position + 1
+    );
+  }
+
+
+  return result;
+}
+
+
+// ==============================
+// プレイヤーとの距離
+// ==============================
+
+function distance(
+  positionA,
+  positionB
+) {
+
+  return (
+    Math.abs(
+      rowOf(positionA) -
+      rowOf(positionB)
+    )
+    +
+    Math.abs(
+      colOf(positionA) -
+      colOf(positionB)
+    )
+  );
+}
+
+
+// ==============================
+// 初期位置
+// 対角線4パターン
+// ==============================
+
+function setRandomStartPositions() {
+
+  const patterns = [
+    [0, 8],
+    [8, 0],
+    [2, 6],
+    [6, 2]
+  ];
+
+
+  const pattern =
+    patterns[
+      Math.floor(
+        Math.random() *
+        patterns.length
+      )
+    ];
+
+
+  playerPosition =
+    pattern[0];
+
+  ghostPosition =
+    pattern[1];
+}
+
+
+// ==============================
+// 盤面描画
+// ==============================
+
+function renderChaseBoard() {
+
+  chaseBoard.innerHTML = "";
+
+
+  for (
+    let position = 0;
+    position < 9;
+    position++
+  ) {
+
+    const cell =
+      document.createElement(
+        "button"
+      );
+
+    cell.type =
+      "button";
+
+    cell.className =
+      "chase-cell";
+
+
+    if (
+      position ===
+      playerPosition
+    ) {
+
+      cell.textContent =
+        "🧍";
+
+      cell.classList.add(
+        "is-player"
+      );
+
+    } else if (
+      position ===
+      ghostPosition
+    ) {
+
+      cell.textContent =
+        "👻";
+
+      cell.classList.add(
+        "is-ghost"
+      );
+
+    } else {
+
+      cell.textContent =
+        "";
+    }
+
+
+    const movable =
+      getNeighbors(
+        playerPosition
+      ).includes(
+        position
+      );
+
+
+    if (
+      movable &&
+      !chaseLocked
+    ) {
+
+      cell.classList.add(
+        "can-move"
+      );
+
+
+      cell.addEventListener(
+        "click",
+        function() {
+
+          movePlayer(
+            position
+          );
+        }
+      );
+
+    } else {
+
+      cell.disabled =
+        true;
+    }
+
+
+    chaseBoard.appendChild(
+      cell
+    );
+  }
+}
+
+
+// ==============================
+// お化けの移動先
+// ==============================
+
+function chooseGhostMove() {
+
+  const neighbors =
+    getNeighbors(
+      ghostPosition
     );
 
+
+  // 60%でプレイヤーへ近づく
+  const chasePlayer =
+    Math.random() < 0.60;
+
+
+  if (chasePlayer) {
+
+    const currentDistance =
+      distance(
+        ghostPosition,
+        playerPosition
+      );
+
+
+    const closerMoves =
+      neighbors.filter(
+        function(position) {
+
+          return (
+            distance(
+              position,
+              playerPosition
+            )
+            <
+            currentDistance
+          );
+        }
+      );
+
+
+    if (
+      closerMoves.length > 0
+    ) {
+
+      return closerMoves[
+        Math.floor(
+          Math.random() *
+          closerMoves.length
+        )
+      ];
+    }
+  }
+
+
+  // 40%ランダム
+  // 60%判定でも近づける場所が
+  // なければここへ来る
+
+  return neighbors[
+    Math.floor(
+      Math.random() *
+      neighbors.length
+    )
+  ];
+}
+
+
+// ==============================
+// プレイヤー移動
+// ==============================
+
+function movePlayer(
+  newPosition
+) {
+
+  if (chaseLocked) {
+    return;
+  }
+
+
+  const oldPlayerPosition =
+    playerPosition;
+
+  const oldGhostPosition =
+    ghostPosition;
+
+
+  playerPosition =
+    newPosition;
+
+
+  // お化けのいるマスへ
+  // 自分から入った
+  if (
+    playerPosition ===
+    ghostPosition
+  ) {
+
+    finishChaseGame(
+      false
+    );
+
+    return;
+  }
+
+
+  chaseLocked =
+    true;
+
+  renderChaseBoard();
+
+
+  chaseMessage.textContent =
+    "……動いた。";
+
+
+  setTimeout(
+    function() {
+
+      const newGhostPosition =
+        chooseGhostMove();
+
+
+      ghostPosition =
+        newGhostPosition;
+
+
+      // ==========================
+      // 捕まった判定
+      // ==========================
+
+      const sameCell =
+        ghostPosition ===
+        playerPosition;
+
+
+      const crossed =
+        (
+          playerPosition ===
+            oldGhostPosition
+          &&
+          ghostPosition ===
+            oldPlayerPosition
+        );
+
+
+      if (
+        sameCell ||
+        crossed
+      ) {
+
+        renderChaseBoard();
+
+        setTimeout(
+          function() {
+
+            finishChaseGame(
+              false
+            );
+
+          },
+          250
+        );
+
+        return;
+      }
+
+
+      // 1ターン生存
+      chaseTurn++;
+
+      chaseTurnText.textContent =
+        chaseTurn;
+
+
+      renderChaseBoard();
+
+
+      // ==========================
+      // 10ターン生存
+      // ==========================
+
+      if (
+        chaseTurn >=
+        chaseMaxTurn
+      ) {
+
+        chaseMessage.textContent =
+          "…………";
+
+
+        setTimeout(
+          function() {
+
+            finishChaseGame(
+              true
+            );
+
+          },
+          700
+        );
+
+        return;
+      }
+
+
+      const remaining =
+        chaseMaxTurn -
+        chaseTurn;
+
+
+      if (
+        remaining <= 3
+      ) {
+
+        chaseMessage.textContent =
+          "あと" +
+          remaining +
+          "ターン。";
+
+      } else {
+
+        chaseMessage.textContent =
+          "逃げろ。";
+      }
+
+
+      chaseLocked =
+        false;
+
+      renderChaseBoard();
+
+    },
+    500
+  );
+}
+
+
+// ==============================
+// ゲーム開始
+// ==============================
+
+function startChaseGame() {
+
+  chaseTurn = 0;
+
+  chaseLocked = false;
+
+  chaseTurnText.textContent =
+    "0";
+
+  chaseMessage.textContent =
+    "逃げろ。";
+
+
+  setRandomStartPositions();
+
+  showScreen(
+    chaseGame
+  );
+
+  renderChaseBoard();
+}
+
+
+// ==============================
+// 勝敗
+// ==============================
+
+function finishChaseGame(
+  survived
+) {
+
+  chaseLocked =
+    true;
+
+
+  if (survived) {
+
+    showScreen(
+      chaseClear
+    );
+
+  } else {
+
+    showScreen(
+      chaseGameOver
+    );
+  }
+}
+
+
+// ==============================
+// 9マス鬼ごっこ開始
+// ==============================
+
+chaseStartButton.addEventListener(
+  "click",
+  startChaseGame
+);
+
+
+// ==============================
+// 9マス鬼ごっこ再挑戦
+// ==============================
+
+chaseRetryButton.addEventListener(
+  "click",
+  startChaseGame
+);
+
+
+// ==============================
+// 仮のクリア処理
+// ==============================
+
+chaseClearButton.addEventListener(
+  "click",
+  function() {
+
+    alert(
+      "ゲームクリア！次に生還者数を実装します。"
+    );
+  }
+);
+    
   </script>
 
 </body>
