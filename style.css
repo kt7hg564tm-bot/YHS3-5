@@ -2503,3 +2503,43 @@ hr {
 
   color: rgba(235, 225, 225, 0.62);
 }
+
+/* =========================================
+   SECRET ENTRANCE
+   ========================================= */
+
+.secret-face-trigger {
+  position: absolute;
+
+  /*
+    背景画像は width:100% で表示されるため、
+    vw基準ならスクロールしても顔と一緒に動く
+  */
+
+  left: 41vw;
+  top: 44vw;
+
+  width: 23vw;
+  height: 35vw;
+
+  max-width: 180px;
+  max-height: 250px;
+
+  z-index: 20;
+
+  padding: 0;
+  margin: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  box-shadow: none;
+
+  opacity: 0;
+
+  cursor: default;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
