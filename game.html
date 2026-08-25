@@ -606,7 +606,27 @@ const chaseMessage =
       )
     ];
 
+      // ==========================
+// 振り返るボタンの誘惑
+// ==========================
 
+backButton.classList.remove(
+  "tempt-turn-4",
+  "tempt-turn-5"
+);
+
+if (turn === 4) {
+  backButton.classList.add(
+    "tempt-turn-4"
+  );
+}
+
+if (turn === 5) {
+  backButton.classList.add(
+    "tempt-turn-5"
+  );
+}
+    
   // ==========================
   // ターンごとの恐怖演出
   // ==========================
