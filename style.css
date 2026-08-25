@@ -3593,3 +3593,18 @@ hr {
 
   text-decoration: none;
 }
+
+/* =========================================
+   SECRET GAME - SCREEN FIX
+   ========================================= */
+
+.secret-game .look-game-screen {
+  display: none !important;
+
+  width: min(520px, 100%) !important;
+  flex: 0 1 520px;
+}
+
+.secret-game .look-game-screen.is-visible {
+  display: block !important;
+}
