@@ -595,17 +595,54 @@ const chaseMessage =
 
     function updateTurn() {
 
-      turnText.textContent =
-        turn;
+  turnText.textContent =
+    turn;
 
-      eventText.textContent =
-        messages[
-          Math.min(
-            turn - 1,
-            messages.length - 1
-          )
-        ];
-    }
+  eventText.textContent =
+    messages[
+      Math.min(
+        turn - 1,
+        messages.length - 1
+      )
+    ];
+
+
+  // ==========================
+  // ターンごとの恐怖演出
+  // ==========================
+
+  play.classList.remove(
+    "fear-turn-1",
+    "fear-turn-2",
+    "fear-turn-3",
+    "fear-turn-4",
+    "fear-turn-5"
+  );
+
+  play.classList.add(
+    "fear-turn-" + turn
+  );
+
+
+  // 5ターン目だけ一瞬暗転
+  if (turn === 5) {
+
+    document.body.classList.add(
+      "look-game-blackout"
+    );
+
+    setTimeout(
+      function() {
+
+        document.body.classList.remove(
+          "look-game-blackout"
+        );
+
+      },
+      180
+    );
+  }
+}
 
 
     // ==============================
