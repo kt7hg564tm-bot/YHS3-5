@@ -217,9 +217,80 @@
      9マス鬼ごっこ
      ========================= -->
 <section
-  id="chaseGame"
+  id="chaseClear"
   class="look-game-screen"
 >
+
+  <p class="look-game-small">
+    …………
+  </p>
+
+  <h2 class="look-game-clear-title">
+    足音が、止まった。
+  </h2>
+
+  <p class="look-game-description">
+    お化けの姿が消えている。
+    <br>
+    あなたは、生き残った。
+  </p>
+
+  <button
+    id="chaseClearButton"
+    class="look-game-main-button"
+    type="button"
+  >
+    出口へ
+  </button>
+
+</section>
+
+
+<!-- =========================
+     最終クリア画面
+     ========================= -->
+<section
+  id="survivorScreen"
+  class="look-game-screen"
+>
+
+  <p class="survivor-small">
+    ESCAPE COMPLETE
+  </p>
+
+  <h2 class="survivor-title">
+    生還
+  </h2>
+
+  <p class="survivor-text">
+    あなたは
+  </p>
+
+  <div
+    id="survivorNumber"
+    class="survivor-number"
+  >
+    --
+  </div>
+
+  <p class="survivor-text">
+    人目の生還者です。
+  </p>
+
+  <p class="survivor-final-message">
+    ……本当に、
+    <br>
+    逃げ切れたと思う？
+  </p>
+
+  <a
+    class="survivor-home-button"
+    href="index.html"
+  >
+    トップへ戻る
+  </a>
+
+</section>
 
   <div class="chase-header">
 
@@ -326,8 +397,19 @@
   </main>
 
 
-  <script>
+  <script type="module">
+<script type="module">
 
+  import {
+    db
+  } from "./firebase.js";
+
+  import {
+    doc,
+    runTransaction
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+  // ここから既存のJavaScript
     // ==============================
     // 要素
     // ==============================
@@ -393,6 +475,15 @@ const chaseClear =
     "chaseClear"
   );
 
+    const survivorScreen =
+  document.getElementById(
+    "survivorScreen"
+  );
+
+const survivorNumber =
+  document.getElementById(
+    "survivorNumber"
+  );
 
 const chaseStartButton =
   document.getElementById(
@@ -1171,20 +1262,179 @@ chaseRetryButton.addEventListener(
   startChaseGame
 );
 
+// ==============================
+// 生還者カウンター
+// ==============================
+
+const survivorKey =
+  "secretGameSurvivorCounted";
+
+
+async function registerSurvivor() {
+
+  const survivorRef =
+    doc(
+      db,
+      "publicStats",
+      "secretGame"
+    );
+
+
+  // すでにこの端末で
+  // 生還者数へ加算済み
+  const alreadyCounted =
+    localStorage.getItem(
+      survivorKey
+    ) === "true";
+
+
+  // ==========================
+  // 初回クリア
+  // ==========================
+
+  if (!alreadyCounted) {
+
+    const result =
+      await runTransaction(
+        db,
+        async (transaction) => {
+
+          const snapshot =
+            await transaction.get(
+              survivorRef
+            );
+
+
+          let currentCount = 0;
+
+
+          if (
+            snapshot.exists()
+          ) {
+
+            currentCount =
+              Number(
+                snapshot.data()
+                  .survivorCount
+              ) || 0;
+          }
+
+
+          const newCount =
+            currentCount + 1;
+
+
+          transaction.set(
+            survivorRef,
+            {
+              survivorCount:
+                newCount
+            },
+            {
+              merge: true
+            }
+          );
+
+
+          return newCount;
+        }
+      );
+
+
+    localStorage.setItem(
+      survivorKey,
+      "true"
+    );
+
+
+    return result;
+  }
+
+
+  // ==========================
+  // 2回目以降のクリア
+  // 人数は増やさない
+  // ==========================
+
+  const result =
+    await runTransaction(
+      db,
+      async (transaction) => {
+
+        const snapshot =
+          await transaction.get(
+            survivorRef
+          );
+
+
+        if (
+          !snapshot.exists()
+        ) {
+          return 0;
+        }
+
+
+        return (
+          Number(
+            snapshot.data()
+              .survivorCount
+          ) || 0
+        );
+      }
+    );
+
+
+  return result;
+}
+
 
 // ==============================
-// 仮のクリア処理
+// 出口へ
 // ==============================
 
 chaseClearButton.addEventListener(
   "click",
-  function() {
+  async function() {
 
-    alert(
-      "ゲームクリア！次に生還者数を実装します。"
-    );
+    chaseClearButton.disabled =
+      true;
+
+    chaseClearButton.textContent =
+      "出口を開いている...";
+
+
+    try {
+
+      const number =
+        await registerSurvivor();
+
+
+      survivorNumber.textContent =
+        number;
+
+
+      showScreen(
+        survivorScreen
+      );
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      chaseClearButton.disabled =
+        false;
+
+      chaseClearButton.textContent =
+        "出口へ";
+
+      alert(
+        "生還者数の読み込みに失敗しました。"
+      );
+    }
   }
 );
+
     
   </script>
 
