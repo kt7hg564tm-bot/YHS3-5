@@ -378,6 +378,85 @@ import {
     watchSettings(render);
 
 // ==============================
+// 隠し入口
+// 顔を短時間に3回タップ
+// ==============================
+
+const secretFaceTrigger =
+  document.getElementById(
+    "secretFaceTrigger"
+  );
+
+const secretOverlay =
+  document.getElementById(
+    "secretOverlay"
+  );
+
+
+let secretTapCount = 0;
+
+let secretTapTimer =
+  null;
+
+
+secretFaceTrigger.addEventListener(
+  "click",
+  function() {
+
+    secretTapCount++;
+
+
+    // 最初のタップから
+    // 約2秒以内に3回必要
+    clearTimeout(
+      secretTapTimer
+    );
+
+
+    secretTapTimer =
+      setTimeout(
+        function() {
+
+          secretTapCount = 0;
+
+        },
+        2000
+      );
+
+
+    // 3回未満なら何もしない
+    if (
+      secretTapCount < 3
+    ) {
+      return;
+    }
+
+
+    // 3回到達
+    secretTapCount = 0;
+
+    clearTimeout(
+      secretTapTimer
+    );
+
+
+    secretOverlay.classList.add(
+      "is-active"
+    );
+
+    secretOverlay.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+
+    // 演出中のスクロール禁止
+    document.body.style.overflow =
+      "hidden";
+  }
+);
+    
+// ==============================
 // みんなの恐怖度
 // ==============================
 
