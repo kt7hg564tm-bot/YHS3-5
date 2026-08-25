@@ -2824,3 +2824,381 @@ hr {
     pointer-events: auto;
   }
 }
+
+/* =========================================
+   SECRET GAME - 振り返るな
+   ========================================= */
+
+.secret-game-page {
+  margin: 0;
+
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #160506 0%,
+      #070203 38%,
+      #000 78%
+    );
+
+  color: #eee6e3;
+
+  overflow: hidden;
+}
+
+
+.secret-game {
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    calc(30px + env(safe-area-inset-top))
+    24px
+    calc(30px + env(safe-area-inset-bottom));
+
+  text-align: center;
+}
+
+
+/* ==============================
+   各画面
+   ============================== */
+
+.look-game-screen {
+  display: none;
+
+  width: min(
+    520px,
+    100%
+  );
+}
+
+
+.look-game-screen.is-visible {
+  display: block;
+
+  animation:
+    lookGameFade
+    0.8s
+    ease
+    forwards;
+}
+
+
+/* ==============================
+   タイトル
+   ============================== */
+
+.look-game-title,
+.look-game-dead-title,
+.look-game-clear-title {
+
+  margin:
+    20px
+    0;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-weight: 400;
+
+  letter-spacing:
+    0.12em;
+}
+
+
+.look-game-title {
+  font-size:
+    clamp(46px, 14vw, 76px);
+
+  color: #eee4df;
+
+  text-shadow:
+    0 0 10px
+      rgba(150, 0, 0, 0.55),
+    0 0 32px
+      rgba(90, 0, 0, 0.5);
+}
+
+
+.look-game-dead-title {
+  font-size:
+    clamp(48px, 15vw, 80px);
+
+  color: #b5171d;
+
+  text-shadow:
+    0 0 18px
+      rgba(180, 0, 0, 0.55);
+}
+
+
+.look-game-clear-title {
+  font-size:
+    clamp(42px, 12vw, 66px);
+
+  color: #eee4df;
+}
+
+
+/* ==============================
+   文章
+   ============================== */
+
+.look-game-small {
+  color:
+    rgba(235, 220, 215, 0.55);
+
+  font-size: 14px;
+
+  letter-spacing:
+    0.14em;
+}
+
+
+.look-game-description {
+  margin:
+    28px
+    0
+    42px;
+
+  color:
+    rgba(240, 229, 225, 0.72);
+
+  font-family:
+    "Yuji Boku",
+    serif;
+
+  font-size:
+    clamp(17px, 5vw, 22px);
+
+  line-height: 2;
+
+  letter-spacing:
+    0.06em;
+}
+
+
+/* ==============================
+   ターン表示
+   ============================== */
+
+.look-game-progress {
+  margin-bottom: 25px;
+
+  color:
+    rgba(255, 255, 255, 0.38);
+
+  font-size: 14px;
+
+  letter-spacing:
+    0.18em;
+}
+
+
+/* ==============================
+   廊下
+   ============================== */
+
+.look-game-corridor {
+  position: relative;
+
+  min-height: 310px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 28px;
+
+  padding: 30px 20px;
+
+  border:
+    1px solid
+    rgba(100, 20, 24, 0.32);
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(35, 3, 5, 0.32),
+      rgba(0, 0, 0, 0.96)
+    );
+
+  box-shadow:
+    inset 0 0 70px #000,
+    0 0 35px rgba(70, 0, 0, 0.15);
+
+  overflow: hidden;
+}
+
+
+.look-game-darkness {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 0%,
+      rgba(0, 0, 0, 0.45) 48%,
+      #000 100%
+    );
+
+  pointer-events: none;
+}
+
+
+.look-game-event-text {
+  position: relative;
+
+  z-index: 2;
+
+  margin: 0;
+
+  font-family:
+    "Yuji Boku",
+    serif;
+
+  font-size:
+    clamp(20px, 6vw, 29px);
+
+  line-height: 1.8;
+
+  color: #e9dfdb;
+
+  text-shadow:
+    0 0 12px #000;
+}
+
+
+/* ==============================
+   ボタン
+   ============================== */
+
+.look-game-actions {
+  display: grid;
+
+  gap: 14px;
+}
+
+
+.look-game-main-button,
+.look-game-back-button {
+
+  width: 100%;
+
+  padding:
+    16px
+    18px;
+
+  border-radius: 12px;
+
+  font-family:
+    "Yuji Boku",
+    serif;
+
+  font-size: 18px;
+
+  letter-spacing:
+    0.08em;
+}
+
+
+.look-game-main-button {
+  border:
+    1px solid
+    rgba(175, 30, 36, 0.72);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(72, 7, 11, 0.96),
+      rgba(25, 2, 4, 0.98)
+    );
+
+  color: #f3e8e4;
+
+  box-shadow:
+    0 0 18px
+    rgba(120, 0, 0, 0.18);
+}
+
+
+.look-game-back-button {
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  background:
+    rgba(10, 10, 12, 0.75);
+
+  color:
+    rgba(255, 255, 255, 0.36);
+}
+
+
+/* ==============================
+   アニメーション
+   ============================== */
+
+@keyframes lookGameFade {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+.look-game-shake {
+  animation:
+    lookGameShake
+    0.18s;
+}
+
+
+@keyframes lookGameShake {
+
+  0% {
+    transform:
+      translate(0, 0);
+  }
+
+  25% {
+    transform:
+      translate(-2px, 1px);
+  }
+
+  50% {
+    transform:
+      translate(3px, -1px);
+  }
+
+  75% {
+    transform:
+      translate(-1px, 2px);
+  }
+
+  100% {
+    transform:
+      translate(0, 0);
+  }
+}
