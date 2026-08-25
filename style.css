@@ -2543,3 +2543,284 @@ hr {
   -webkit-tap-highlight-color:
     transparent;
 }
+
+/* =========================================
+   SECRET OVERLAY
+   ========================================= */
+
+.secret-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 99999;
+
+  display: none;
+
+  background: #000;
+
+  overflow: hidden;
+}
+
+
+/* 3回タップしたら表示 */
+
+.secret-overlay.is-active {
+  display: block;
+
+  animation:
+    secretScreenShake
+    0.12s
+    4;
+}
+
+
+/* =========================================
+   グリッチ演出
+   ========================================= */
+
+.secret-glitch-layer {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.04) 0,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+
+  opacity: 0;
+
+  animation:
+    secretGlitch
+    0.9s
+    ease-out
+    forwards;
+}
+
+
+/* =========================================
+   隠し画面中央
+   ========================================= */
+
+.secret-content {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   メッセージ
+   ========================================= */
+
+.secret-message {
+  margin: 0;
+
+  font-family:
+    "Yuji Boku",
+    "Hiragino Mincho ProN",
+    serif;
+
+  font-size:
+    clamp(30px, 9vw, 52px);
+
+  line-height: 1.6;
+
+  letter-spacing: 0.08em;
+
+  color: #eee5e2;
+
+  opacity: 0;
+
+  text-shadow:
+    0 0 8px rgba(165, 0, 0, 0.7),
+    0 0 25px rgba(80, 0, 0, 0.7);
+
+  animation:
+    secretTextAppear
+    1.3s
+    1s
+    forwards;
+}
+
+
+.secret-message-delay {
+  margin-top: 24px;
+
+  font-size:
+    clamp(20px, 6vw, 31px);
+
+  color:
+    rgba(240, 225, 220, 0.84);
+
+  animation-delay:
+    2.8s;
+}
+
+
+/* =========================================
+   「先へ進む」ボタン
+   ========================================= */
+
+.secret-enter-button {
+  margin-top: 48px;
+
+  padding:
+    14px
+    32px;
+
+  border:
+    1px solid rgba(190, 23, 30, 0.75);
+
+  border-radius: 12px;
+
+  background:
+    rgba(40, 2, 5, 0.42);
+
+  color: #f0e7e4;
+
+  font-family:
+    "Yuji Boku",
+    serif;
+
+  font-size: 20px;
+
+  letter-spacing: 0.12em;
+
+  text-decoration: none;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  box-shadow:
+    0 0 24px
+    rgba(150, 0, 0, 0.16);
+
+  animation:
+    secretButtonAppear
+    1.2s
+    5.1s
+    forwards;
+}
+
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+
+@keyframes secretGlitch {
+
+  0% {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.8;
+    transform: translateX(-8px);
+  }
+
+  20% {
+    transform: translateX(9px);
+  }
+
+  30% {
+    opacity: 0.3;
+    transform: translateX(-3px);
+  }
+
+  45% {
+    opacity: 0.9;
+    transform: translateX(6px);
+  }
+
+  65% {
+    opacity: 0.15;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+
+@keyframes secretScreenShake {
+
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-4px, 2px);
+  }
+
+  50% {
+    transform: translate(5px, -2px);
+  }
+
+  75% {
+    transform: translate(-2px, -1px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+
+@keyframes secretTextAppear {
+
+  from {
+    opacity: 0;
+
+    filter: blur(7px);
+
+    transform:
+      translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+
+    filter: blur(0);
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+@keyframes secretButtonAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+    pointer-events: auto;
+  }
+}
