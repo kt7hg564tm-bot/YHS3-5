@@ -172,6 +172,157 @@
 
     </section>
 
+<!-- =========================
+     9マス鬼ごっこ開始前
+     ========================= -->
+<section
+  id="chaseIntro"
+  class="look-game-screen"
+>
+
+  <p class="look-game-small">
+    ……安心するのは、まだ早い。
+  </p>
+
+  <h2 class="chase-title">
+    お化けから逃げ切れ！
+  </h2>
+
+  <p class="look-game-description">
+    あなたもお化けも、
+    <br>
+    上下左右に1マスずつ動く。
+    <br><br>
+    10ターン、生き残れ。
+  </p>
+
+  <div class="chase-rules">
+    <p>🧍 あなたが先に1マス移動</p>
+    <p>👻 そのあとお化けが1マス移動</p>
+    <p>⚠️ 同じマスに入ったらゲームオーバー</p>
+  </div>
+
+  <button
+    id="chaseStartButton"
+    class="look-game-main-button"
+    type="button"
+  >
+    逃げる
+  </button>
+
+</section>
+
+
+<!-- =========================
+     9マス鬼ごっこ
+     ========================= -->
+<section
+  id="chaseGame"
+  class="look-game-screen"
+>
+
+  <div class="chase-header">
+
+    <div class="chase-survive">
+      SURVIVE
+    </div>
+
+    <div class="chase-turn">
+      <span id="chaseTurn">
+        0
+      </span>
+      / 10
+    </div>
+
+  </div>
+
+
+  <p
+    id="chaseMessage"
+    class="chase-message"
+  >
+    逃げろ。
+  </p>
+
+
+  <div
+    id="chaseBoard"
+    class="chase-board"
+  ></div>
+
+
+  <p class="chase-help">
+    隣のマスをタップして移動
+  </p>
+
+</section>
+
+
+<!-- =========================
+     9マス鬼ごっこ失敗
+     ========================= -->
+<section
+  id="chaseGameOver"
+  class="look-game-screen"
+>
+
+  <p class="look-game-small">
+    ……捕まった。
+  </p>
+
+  <h2 class="look-game-dead-title">
+    GAME OVER
+  </h2>
+
+  <p class="look-game-description">
+    最後の部屋から
+    <br>
+    もう一度逃げる？
+  </p>
+
+  <button
+    id="chaseRetryButton"
+    class="look-game-main-button"
+    type="button"
+  >
+    もう一度
+  </button>
+
+</section>
+
+
+<!-- =========================
+     9マス鬼ごっこクリア
+     ========================= -->
+<section
+  id="chaseClear"
+  class="look-game-screen"
+>
+
+  <p class="look-game-small">
+    …………
+  </p>
+
+  <h2 class="look-game-clear-title">
+    足音が、止まった。
+  </h2>
+
+  <p class="look-game-description">
+    お化けの姿が消えている。
+    <br><br>
+    あなたは、生き残った。
+  </p>
+
+  <button
+    id="chaseClearButton"
+    class="look-game-main-button"
+    type="button"
+  >
+    出口へ
+  </button>
+
+</section>
+    
   </main>
 
 
