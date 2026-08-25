@@ -3470,3 +3470,126 @@ hr {
   letter-spacing:
     0.08em;
 }
+
+/* =========================================
+   SECRET GAME - SURVIVOR
+   ========================================= */
+
+.survivor-small {
+  margin: 0 0 16px;
+
+  font-size: 12px;
+  letter-spacing: 0.28em;
+
+  color:
+    rgba(255, 255, 255, 0.32);
+}
+
+
+.survivor-title {
+  margin: 0 0 26px;
+
+  font-family:
+    "Yuji Boku",
+    serif;
+
+  font-size:
+    clamp(58px, 18vw, 94px);
+
+  font-weight: 400;
+
+  letter-spacing: 0.14em;
+
+  color: #f0e5e1;
+
+  text-shadow:
+    0 0 12px rgba(180, 0, 0, 0.7),
+    0 0 42px rgba(95, 0, 0, 0.55);
+}
+
+
+.survivor-text {
+  margin:
+    8px
+    0;
+
+  font-family:
+    "Yuji Boku",
+    serif;
+
+  font-size:
+    clamp(18px, 5vw, 24px);
+
+  color:
+    rgba(240, 228, 224, 0.72);
+}
+
+
+.survivor-number {
+  margin:
+    12px
+    0;
+
+  font-size:
+    clamp(74px, 24vw, 130px);
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  color: #b71920;
+
+  text-shadow:
+    0 0 14px rgba(210, 0, 0, 0.65),
+    0 0 36px rgba(100, 0, 0, 0.7);
+}
+
+
+.survivor-final-message {
+  margin:
+    42px
+    0;
+
+  font-family:
+    "Yuji Boku",
+    serif;
+
+  font-size:
+    clamp(19px, 5.5vw, 27px);
+
+  line-height: 1.9;
+
+  color:
+    rgba(230, 218, 214, 0.62);
+}
+
+
+.survivor-home-button {
+  display: inline-block;
+
+  padding:
+    14px
+    28px;
+
+  border:
+    1px solid rgba(160, 25, 31, 0.58);
+
+  border-radius:
+    12px;
+
+  background:
+    rgba(38, 3, 5, 0.55);
+
+  color: #eee3df;
+
+  font-family:
+    "Yuji Boku",
+    serif;
+
+  font-size: 17px;
+
+  letter-spacing:
+    0.08em;
+
+  text-decoration: none;
+}
