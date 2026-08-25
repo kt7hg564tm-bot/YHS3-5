@@ -106,6 +106,24 @@
 
     </section>
 
+    <!-- =========================
+     振り返った演出
+     ========================= -->
+<section
+  id="lookBackScare"
+  class="look-game-screen look-back-scare"
+>
+
+  <div class="look-back-scare-dark"></div>
+
+  <p
+    id="lookBackScareText"
+    class="look-back-scare-text"
+  >
+    見 た な
+  </p>
+
+</section>
 
     <!-- =========================
          ゲームオーバー
@@ -644,19 +662,84 @@ const chaseMessage =
     );
 
 
-    // ==============================
-    // 振り返る
-    // ==============================
+// ==============================
+// 振り返る
+// ==============================
 
-    backButton.addEventListener(
-      "click",
+backButton.addEventListener(
+  "click",
+  function() {
+
+    // 演出画面へ
+    showScreen(
+      backScare
+    );
+
+    backScareText.classList.remove(
+      "is-show"
+    );
+
+    document.body.classList.remove(
+      "look-back-flash"
+    );
+
+
+    // 少し「間」を作る
+    setTimeout(
+      function() {
+
+        backScareText.classList.add(
+          "is-show"
+        );
+
+      },
+      550
+    );
+
+
+    // 赤いフラッシュ＋揺れ
+    setTimeout(
+      function() {
+
+        document.body.classList.add(
+          "look-back-flash"
+        );
+
+      },
+      1050
+    );
+
+
+    // 暗転
+    setTimeout(
+      function() {
+
+        backScareText.classList.remove(
+          "is-show"
+        );
+
+        document.body.classList.remove(
+          "look-back-flash"
+        );
+
+      },
+      1450
+    );
+
+
+    // GAME OVERへ
+    setTimeout(
       function() {
 
         showScreen(
           gameOver
         );
-      }
+
+      },
+      1900
     );
+  }
+);
 
 
     // ==============================
