@@ -27,6 +27,51 @@
     ☰
   </a>
 
+<!-- 隠し入口：人物の顔 -->
+<button
+  id="secretFaceTrigger"
+  class="secret-face-trigger"
+  type="button"
+  aria-label=" "
+></button>
+
+
+<!-- 隠し演出 -->
+<div
+  id="secretOverlay"
+  class="secret-overlay"
+  aria-hidden="true"
+>
+  <div class="secret-glitch-layer"></div>
+
+  <div class="secret-content">
+
+    <p
+      id="secretMessage1"
+      class="secret-message"
+    >
+      見つけた。
+    </p>
+
+    <p
+      id="secretMessage2"
+      class="secret-message secret-message-delay"
+    >
+      ……いや、
+      <br>
+      見つけられたのは君の方だ。
+    </p>
+
+    <a
+      id="secretEnterButton"
+      class="secret-enter-button"
+      href="game.html"
+    >
+      先へ進む
+    </a>
+
+  </div>
+</div>  
 
   <main class="home-main">
 
