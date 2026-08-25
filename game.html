@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>暗鞠｜？？？</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css?v=50"
+  >
+</head>
+
+<body class="secret-game-page">
+
+  <main class="secret-game">
+
+    <!-- =========================
+         スタート画面
+         ========================= -->
+    <section
+      id="lookGameIntro"
+      class="look-game-screen is-visible"
+    >
+
+      <p class="look-game-small">
+        この先に、出口がある。
+      </p>
+
+      <h1 class="look-game-title">
+        振り返るな
+      </h1>
+
+      <p class="look-game-description">
+        前だけを見て進め。
+        <br>
+        後ろに何かを感じても、
+        <br>
+        決して振り返ってはいけない。
+      </p>
+
+      <button
+        id="lookGameStart"
+        class="look-game-main-button"
+        type="button"
+      >
+        進む
+      </button>
+
+    </section>
+
+
+    <!-- =========================
+         ゲーム画面
+         ========================= -->
+    <section
+      id="lookGamePlay"
+      class="look-game-screen"
+    >
+
+      <div class="look-game-progress">
+        <span id="lookTurn">
+          1
+        </span>
+        / 5
+      </div>
+
+      <div class="look-game-corridor">
+
+        <div class="look-game-darkness"></div>
+
+        <p
+          id="lookGameText"
+          class="look-game-event-text"
+        >
+          暗い廊下が続いている……
+        </p>
+
+      </div>
+
+
+      <div class="look-game-actions">
+
+        <button
+          id="lookForwardButton"
+          class="look-game-main-button"
+          type="button"
+        >
+          前へ進む
+        </button>
+
+        <button
+          id="lookBackButton"
+          class="look-game-back-button"
+          type="button"
+        >
+          振り返る
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         ゲームオーバー
+         ========================= -->
+    <section
+      id="lookGameOver"
+      class="look-game-screen"
+    >
+
+      <p class="look-game-small">
+        ……振り返った。
+      </p>
+
+      <h2 class="look-game-dead-title">
+        見つかった
+      </h2>
+
+      <p class="look-game-description">
+        もう一度、
+        <br>
+        最初から逃げる？
+      </p>
+
+      <button
+        id="lookRetryButton"
+        class="look-game-main-button"
+        type="button"
+      >
+        もう一度
+      </button>
+
+    </section>
+
+
+    <!-- =========================
+         前半クリア
+         ========================= -->
+    <section
+      id="lookGameClear"
+      class="look-game-screen"
+    >
+
+      <p class="look-game-small">
+        足音が、止まった。
+      </p>
+
+      <h2 class="look-game-clear-title">
+        最後の部屋
+      </h2>
+
+      <p class="look-game-description">
+        扉の向こうに、
+        <br>
+        何かがいる。
+      </p>
+
+      <button
+        id="finalRoomButton"
+        class="look-game-main-button"
+        type="button"
+      >
+        扉を開ける
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    // ==============================
+    // 要素
+    // ==============================
+
+    const intro =
+      document.getElementById(
+        "lookGameIntro"
+      );
+
+    const play =
+      document.getElementById(
+        "lookGamePlay"
+      );
+
+    const gameOver =
+      document.getElementById(
+        "lookGameOver"
+      );
+
+    const clear =
+      document.getElementById(
+        "lookGameClear"
+      );
+
+
+    const startButton =
+      document.getElementById(
+        "lookGameStart"
+      );
+
+    const forwardButton =
+      document.getElementById(
+        "lookForwardButton"
+      );
+
+    const backButton =
+      document.getElementById(
+        "lookBackButton"
+      );
+
+    const retryButton =
+      document.getElementById(
+        "lookRetryButton"
+      );
+
+    const finalRoomButton =
+      document.getElementById(
+        "finalRoomButton"
+      );
+
+
+    const turnText =
+      document.getElementById(
+        "lookTurn"
+      );
+
+    const eventText =
+      document.getElementById(
+        "lookGameText"
+      );
+
+
+    // ==============================
+    // ゲーム状態
+    // ==============================
+
+    let turn = 1;
+
+    const maxTurn = 5;
+
+
+    // ==============================
+    // 画面切り替え
+    // ==============================
+
+    function showScreen(
+      target
+    ) {
+
+      document
+        .querySelectorAll(
+          ".look-game-screen"
+        )
+        .forEach(
+          function(screen) {
+
+            screen.classList.remove(
+              "is-visible"
+            );
+          }
+        );
+
+
+      target.classList.add(
+        "is-visible"
+      );
+    }
+
+
+    // ==============================
+    // イベント文章
+    // ==============================
+
+    const messages = [
+
+      "暗い廊下が続いている……",
+
+      "後ろから、足音が聞こえる。",
+
+      "……何かが近づいている。",
+
+      "すぐ後ろに、気配がある。",
+
+      "耳元で、何かが笑った。"
+    ];
+
+
+    function updateTurn() {
+
+      turnText.textContent =
+        turn;
+
+      eventText.textContent =
+        messages[
+          Math.min(
+            turn - 1,
+            messages.length - 1
+          )
+        ];
+    }
+
+
+    // ==============================
+    // スタート
+    // ==============================
+
+    startButton.addEventListener(
+      "click",
+      function() {
+
+        turn = 1;
+
+        updateTurn();
+
+        showScreen(
+          play
+        );
+      }
+    );
+
+
+    // ==============================
+    // 前へ進む
+    // ==============================
+
+    forwardButton.addEventListener(
+      "click",
+      function() {
+
+        if (
+          turn >= maxTurn
+        ) {
+
+          showScreen(
+            clear
+          );
+
+          return;
+        }
+
+
+        turn++;
+
+        updateTurn();
+
+
+        // 一瞬だけ画面を揺らす
+        document.body.classList.add(
+          "look-game-shake"
+        );
+
+
+        setTimeout(
+          function() {
+
+            document.body.classList.remove(
+              "look-game-shake"
+            );
+
+          },
+          180
+        );
+      }
+    );
+
+
+    // ==============================
+    // 振り返る
+    // ==============================
+
+    backButton.addEventListener(
+      "click",
+      function() {
+
+        showScreen(
+          gameOver
+        );
+      }
+    );
+
+
+    // ==============================
+    // リトライ
+    // ==============================
+
+    retryButton.addEventListener(
+      "click",
+      function() {
+
+        turn = 1;
+
+        updateTurn();
+
+        showScreen(
+          play
+        );
+      }
+    );
+
+
+    // ==============================
+    // 最後の部屋
+    // ==============================
+
+    finalRoomButton.addEventListener(
+      "click",
+      function() {
+
+        alert(
+          "次は9マス鬼ごっこを実装します。"
+        );
+      }
+    );
+
+  </script>
+
+</body>
+</html>
